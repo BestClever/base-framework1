@@ -1,0 +1,17 @@
+server:
+  port: 8085
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/springbootmybatisplus_demo?serverTimezone=UTC&useSSL=false&autoReconnect=true&useUnicode=true&characterEncoding=utf8
+    username: root
+    password:
+  resources:
+    static-locations: classpath:/templates/,classpath:/static/
+  thymeleaf:
+    prefix: classpath:/templates/
+mybatis-plus:
+  mapper-locations: classpath:com/**/mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
