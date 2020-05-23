@@ -254,12 +254,12 @@ layui.use(["element", "form", "layer", "okUtils", "okTab", "okLayer", "okContext
     * 系统公告
     */
    $(document).on("click", "#notice", noticeFun);
-   !function () {
+   /*!function () {
       var notice = sessionStorage.getItem("notice");
       if (notice != "true") {
          noticeFun();
       }
-   }();
+   }();*/
 
    function noticeFun() {
       var srcWidth = okUtils.getBodyWidth();
@@ -285,44 +285,6 @@ layui.use(["element", "form", "layer", "okUtils", "okTab", "okLayer", "okContext
          }
       });
    }
-
-   /**
-    * 捐赠作者
-    */
-   $(".layui-footer button.donate").click(function () {
-      layer.tab({
-         area: ["330px", "350px"],
-         tab: [{
-            title: "支付宝",
-            content: "<img src='images/zfb.jpg' width='200' height='300' style='margin: 0 auto; display: block;'>"
-         }, {
-            title: "微信",
-            content: "<img src='images/wx.jpg' width='200' height='300' style='margin: 0 auto; display: block;'>"
-         }]
-      });
-   });
-
-   /**
-    * QQ群交流
-    */
-   $("body").on("click", ".layui-footer button.communication, #noticeQQ", function () {
-      layer.tab({
-         area: ["auto", "370px"],
-         tab: [{
-            title: "QQ群4",
-            content: "<img src='images/qq4.png' width='200' height='300' style='margin: 0 auto; display: block;'/>"
-         }, {
-            title: "QQ群3（已满）",
-            content: "<img src='images/qq3.png' width='200' height='300' style='margin: 0 auto; display: block;'/>"
-         }, {
-            title: "QQ群2（已满）",
-            content: "<img src='images/qq2.png' width='200' height='300' style='margin: 0 auto; display: block;'/>"
-         }, {
-            title: "QQ群1（已满）",
-            content: "<img src='images/qq1.png' width='200' height='300' style='margin: 0 auto; display: block;'/>"
-         }]
-      });
-   });
 
    /**
     * 弹窗皮肤
@@ -414,17 +376,4 @@ layui.use(["element", "form", "layer", "okUtils", "okTab", "okLayer", "okContext
          window.location.replace("./pages/login.html");  //替换当前页面
       });
    }
-
-   console.log("        __                         .___      .__        \n" +
-      "  ____ |  | __         _____     __| _/_____ |__| ____  \n" +
-      " /  _ \\|  |/ /  ______ \\__  \\   / __ |/     \\|  |/    \\ \n" +
-      "(  <_> )    <  /_____/  / __ \\_/ /_/ |  Y Y  \\  |   |  \\\n" +
-      " \\____/|__|_ \\         (____  /\\____ |__|_|  /__|___|  /\n" +
-      "            \\/              \\/      \\/     \\/        \\/\n" +
-      "" +
-      "版本：v2.0\n" +
-      "作者：bobi\n" +
-      "邮箱：bobi1234@foxmail.com\n" +
-      "企鹅：833539807\n" +
-      "描述：一个很赞的，扁平化风格的，响应式布局的后台管理模版，旨为后端程序员减压！");
 });
