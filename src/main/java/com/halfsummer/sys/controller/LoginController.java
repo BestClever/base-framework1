@@ -10,10 +10,12 @@ import com.halfsummer.sys.service.UserService;
 import com.halfsummer.sys.vo.UserVo;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -32,13 +34,14 @@ public class LoginController {
 
     @RequestMapping(value = "/login")
     @ResponseBody
-    public ResultInfo login(UserVo userVo){
+    public ResultInfo login(HttpServletRequest request, UserVo userVo){
         QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
         userQueryWrapper.eq("user_name",userVo.getUserName());
         User user = userServicel.getOne(userQueryWrapper);
         if (ObjectUtil.equal(user,null)) {
             ResultDataUtil.throwExcepion(CommonEnum.not_exist_user);
         }
+        request.getSession().setAttribute("user",user);
         return ResultDataUtil.createSuccess(CommonEnum.SUCCESS);
     }
 
