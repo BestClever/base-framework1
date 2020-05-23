@@ -6,17 +6,17 @@ import java.util.List;
 /**
  * @author BestClever
  * @title: DataGridResultInfo
- * @projectName springboot_study
+ * @projectName 
  * @description: layui 表格返回值
  * @date 2020-02-18 13:52
  */
-public class DataGridResultInfo {
-    private int code = 0 ;
+public class DataGridResultInfo<T> {
+    private int code = 0;
     private String msg = "";
     private Long count;
-    private List data = new ArrayList();
+    private List<T> data = new ArrayList<T>();
 
-    public DataGridResultInfo(Long count, List data) {
+    public DataGridResultInfo(Long count, List<T> data) {
         this.count = count;
         this.data = data;
     }
@@ -48,11 +48,11 @@ public class DataGridResultInfo {
         this.count = count;
     }
 
-    public List getData() {
+    public List<T> getData() {
         return data;
     }
 
-    public void setData(List data) {
+    public void setData(List<T> data) {
         this.data = data;
     }
 }

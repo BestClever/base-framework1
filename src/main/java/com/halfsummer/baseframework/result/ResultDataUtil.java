@@ -1,8 +1,12 @@
 package com.halfsummer.baseframework.result;
 
 
+
+
 import com.halfsummer.baseframework.exception.BaseInfoInterface;
 import com.halfsummer.baseframework.exception.BizException;
+
+import java.util.List;
 
 /**
  *  ResponseDataUtil:返回的工具类,主要是方便返回的写法
@@ -13,15 +17,10 @@ public class ResultDataUtil {
     /**
      * 返回成功描述和数据详情
      * @param baseInfoInterface
-     * @param data
      * @return
      */
-    public static ResultInfo createSuccess(BaseInfoInterface baseInfoInterface, Object data){
-        ResultInfo resultInfo =new ResultInfo();
-        resultInfo.setCode(baseInfoInterface.getResultCode());
-        resultInfo.setMsg(baseInfoInterface.getResultMsg());
-        resultInfo.setData(data);
-        return resultInfo;
+    public static ResultInfo createSuccess(BaseInfoInterface baseInfoInterface){
+        return new ResultInfo().setSucess(true).setCode(baseInfoInterface.getResultCode()).setMsg(baseInfoInterface.getResultMsg());
     }
 
 
@@ -31,26 +30,19 @@ public class ResultDataUtil {
      * @return
      */
     public static ResultInfo createFail(BaseInfoInterface baseInfoInterface){
-        ResultInfo resultInfo =new ResultInfo();
-        resultInfo.setCode(baseInfoInterface.getResultCode());
-        resultInfo.setMsg(baseInfoInterface.getResultMsg());
-        return resultInfo;
+        return new ResultInfo().setSucess(false).setCode(baseInfoInterface.getResultCode()).setMsg(baseInfoInterface.getResultMsg());
     }
-
 
     /**
      * 失败
      */
     public static ResultInfo createFail(Integer code, String message) {
-        ResultInfo resultInfo = new ResultInfo();
-        resultInfo.setCode(code);
-        resultInfo.setMsg(message);
-        return resultInfo;
+        return new ResultInfo().setSucess(false).setCode(code).setMsg(message);
     }
 
 
     /**
-     * 创建查询结果信息
+     * 创建查询结果信息 专门为 数据表格设计
      * @param pageInfo
      * @return
      */

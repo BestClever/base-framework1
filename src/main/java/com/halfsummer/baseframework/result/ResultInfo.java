@@ -1,12 +1,18 @@
 package com.halfsummer.baseframework.result;
 
 
+
 /**
  * ResponseData:
  *
  */
 
-public class ResultInfo {
+public class ResultInfo<T> {
+
+    /**
+     * 返回是否成功
+     */
+    private boolean sucess;
 
     /**
      * 统一返回码
@@ -21,7 +27,16 @@ public class ResultInfo {
     /**
      * 结果对象
      */
-    public Object data;
+    public T data;
+
+    public boolean isSucess() {
+        return sucess;
+    }
+
+    public ResultInfo setSucess(boolean sucess) {
+        this.sucess = sucess;
+        return this;
+    }
 
     public ResultInfo() {
     }
@@ -31,7 +46,7 @@ public class ResultInfo {
         this.msg = msg;
     }
 
-    public ResultInfo(Integer code, String msg, Object data) {
+    public ResultInfo(Integer code, String msg, T data) {
         this.code = code;
         this.msg = msg;
         this.data = data;
@@ -41,23 +56,26 @@ public class ResultInfo {
         return code;
     }
 
-    public void setCode(Integer code) {
+    public ResultInfo setCode(Integer code) {
         this.code = code;
+        return this;
     }
 
     public String getMsg() {
         return msg;
     }
 
-    public void setMsg(String msg) {
+    public ResultInfo setMsg(String msg) {
         this.msg = msg;
+        return this;
     }
 
     public Object getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public ResultInfo setData(T data) {
         this.data = data;
+        return this;
     }
 }

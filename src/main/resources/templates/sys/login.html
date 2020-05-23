@@ -15,7 +15,7 @@
             <div class="login_face"><img src="../images/logo.png"></div>
             <div class="layui-form-item input-item">
                 <label for="username">用户名</label>
-                <input type="text" lay-verify="required" name="username" placeholder="请输入账号" autocomplete="off" id="username" class="layui-input">
+                <input type="text" lay-verify="required" name="userName" placeholder="请输入账号" autocomplete="off" id="username" class="layui-input">
             </div>
             <div class="layui-form-item input-item">
                 <label for="password">密码</label>
@@ -28,10 +28,6 @@
             </div>
             <div class="layui-form-item">
                 <button class="layui-btn layui-block" lay-filter="login" lay-submit="">登录</button>
-            </div>
-            <div class="login-link">
-                <a href="register.html">注册</a>
-                <a href="forget.html">忘记密码?</a>
             </div>
         </form>
     </div>
@@ -66,9 +62,10 @@
              * 表单提交
              */
             form.on("submit(login)", function (data) {
-                okUtils.ajax("/login", "post", data.field, true).done(function (response) {
+                okUtils.ajax("/login/login", "post", data.field, true).done(function (response) {
                     okLayer.greenTickMsg(response.msg, function () {
-                        window.location = "../index.html";
+                        debugger
+                        window.location = okUtils.baseUrl + "/sys/index";
                     })
                 }).fail(function (error) {
                     console.log(error)

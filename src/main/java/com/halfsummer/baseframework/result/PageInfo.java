@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * @author BestClever
  * @title: PageInfo
- * @projectName springboot_study
+ * @projectName
  * @description: TODO
  * @date 2020-02-18 14:06
  */
