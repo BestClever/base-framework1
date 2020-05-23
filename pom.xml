@@ -16,7 +16,10 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <druid.version>1.0.26</druid.version>
+        <druid.version>1.1.18</druid.version>
+        <guava.version>28.2-jre</guava.version>
+        <hutool.version>5.3.5</hutool.version>
+        <mybatisplus.version>3.3.1.tmp</mybatisplus.version>
     </properties>
 
     <dependencies>
@@ -54,14 +57,14 @@
         <!-- druid数据库连接池 -->
         <dependency>
             <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
+            <artifactId>druid-spring-boot-starter</artifactId>
             <version>${druid.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>3.3.1.tmp</version>
+            <version>${mybatisplus.version}</version>
         </dependency>
 
         <!--工具类-->
@@ -69,14 +72,14 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
-            <version>5.3.5</version>
+            <version>${hutool.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>28.2-jre</version>
+            <version>${guava.version}</version>
         </dependency>
 
     </dependencies>
