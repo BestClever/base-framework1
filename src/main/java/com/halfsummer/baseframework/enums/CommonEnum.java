@@ -20,7 +20,7 @@ public enum CommonEnum implements BaseInfoInterface {
 	SERVER_BUSY(503,"服务器正忙，请稍后再试!"),
 
 	ARITHMETIC_ERROR(1100,"数学运算错误!"),
-
+	SAVE_FAILED(101,"保存失败,请重试"),
 
 	not_exist_user(2000,"用户名或密码错误")
 

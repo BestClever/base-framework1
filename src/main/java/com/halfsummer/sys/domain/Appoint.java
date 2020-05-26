@@ -30,5 +30,5 @@ public class Appoint {
         public String appointStatus;
         public String cancelId;
         public String medicalAdvice;
-
+        public  String nsname;
 }

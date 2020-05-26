@@ -28,8 +28,9 @@ public class User {
     private String userSex;
     private String birthDay;
     private String phone;
-    private String roleCode;
+    private String roleCode;//1:患者2:医生3:管理员
     private String roleName;
+
 
 
 }
