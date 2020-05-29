@@ -1,22 +1,29 @@
 package com.halfsummer.sys.domain;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import lombok.experimental.Accessors;
 
 /**
  * 医生实体类
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
+@Accessors(chain = true)
+@TableName("t_sys_department")
+@ToString
 public class Doctor {
     //医生 id
-    public String doctorId;
+    @TableId(value = "department_Id")
+    public String departmentId;
     //医生名字
-    public String doctorName;
-    //医生门诊数量
-    public String outpatientNumber;
+    public String departmentName;
     //医生科室
-    public  String department;
-    //当前预约人数
-    public String reservationNumber;
+    public  String departmentProfile;
+
 
 
 }

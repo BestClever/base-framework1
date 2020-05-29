@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.halfsummer.sys.mapper.DoctorMapper">
+
+    <select id="getdoctorList" resultType="com.halfsummer.sys.vo.DoctorVo" parameterType="com.halfsummer.sys.vo.DoctorVo">
+        SELECT
+            u.user_id ,
+            u.user_name ,
+            d.department_name ,
+            o.outpatient_date ,
+            o.outpatient_id ,
+            o.current_num
+        FROM
+            t_sys_user u
+        LEFT JOIN t_sys_outpatient o ON u.user_id = o.doctor_id
+        LEFT JOIN t_sys_department d ON u.department_Id = d.department_Id
+        WHERE
+            u.role_code = '2'
+
+    </select>
+
+</mapper>
