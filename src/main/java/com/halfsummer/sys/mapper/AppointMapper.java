@@ -1,6 +1,9 @@
 package com.halfsummer.sys.mapper;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.halfsummer.sys.domain.Appoint;
 
 /**
@@ -13,4 +16,5 @@ import com.halfsummer.sys.domain.Appoint;
 public interface AppointMapper extends BaseMapper<Appoint> {
 
 
+    IPage<Appoint> selectMypage(Page<Appoint> page, QueryWrapper<Appoint> wrapper);
 }

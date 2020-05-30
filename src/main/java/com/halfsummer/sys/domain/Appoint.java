@@ -19,7 +19,7 @@ public class Appoint {
         @TableId(value = "appoint_id")
         public String appointId;
         public String userId;
-        public String username;
+        public String userName;
         public String outpatientId;
         public String appointDate;
         public String appointStage;
@@ -29,4 +29,5 @@ public class Appoint {
         public String cancelName;
         public String medicalAdvice;
         public  String nsname;
+        public String patientType;
 }
