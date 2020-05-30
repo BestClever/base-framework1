@@ -7,5 +7,5 @@ package com.halfsummer.sys.mapper;
         import java.util.List;
 
 public interface DoctorMapper extends BaseMapper<Doctor> {
-        List<Doctor> getdoctorList(DoctorVo doctorVo);
+        List<DoctorVo> getdoctorList(DoctorVo doctorVo);
 }
