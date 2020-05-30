@@ -30,4 +30,8 @@
 
     </select>
 
+    <select id="selectMyPage" resultType="com.halfsummer.sys.vo.DoctorVo">
+        SELECT * FROM t_sys_outpatient ${ew.customSqlSegment}
+    </select>
+
 </mapper>
