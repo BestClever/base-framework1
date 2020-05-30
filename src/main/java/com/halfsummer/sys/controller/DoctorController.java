@@ -26,11 +26,6 @@ import java.util.List;
 public class DoctorController {
     @Autowired
     private DoctorService doctorService;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private OutpatientServer outpatientServer;
-
 
     @RequestMapping(value = "/list")
     @ResponseBody
