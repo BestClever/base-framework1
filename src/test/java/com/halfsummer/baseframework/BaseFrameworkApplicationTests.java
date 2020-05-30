@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
-import java.util.Map;
 
 @SpringBootTest
 class BaseFrameworkApplicationTests {
@@ -17,9 +16,9 @@ class BaseFrameworkApplicationTests {
     @Test
     void contextLoads() {
         DoctorVo doctorVo = new DoctorVo();
-        List<Map<String,Object>> doctorVos = doctorMapper.getdoctorList(doctorVo);
+        List<DoctorVo> doctorVos = doctorMapper.getdoctorList(doctorVo);
         doctorVos.forEach((doctor)->{
-            System.out.println(doctor);
+            System.out.println(doctor.getDepartmentName());
         });
     }
 

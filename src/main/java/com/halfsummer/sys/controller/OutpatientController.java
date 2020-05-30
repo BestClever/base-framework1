@@ -25,6 +25,11 @@ public class OutpatientController {
     @Autowired
     private OutpatientServer outpatientServer;
 
+    @RequestMapping(value = "/index")
+    public String index(){
+        return "outpatient/index";
+    }
+
     @RequestMapping(value = "/list")
     @ResponseBody
     public ResultInfo getOutpatientList() {

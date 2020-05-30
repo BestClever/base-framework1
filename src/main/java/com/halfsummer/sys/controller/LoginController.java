@@ -91,7 +91,7 @@ public class LoginController {
         menu.setCheck(true);
         Menu yyxx = new Menu();
         yyxx.setTitle("预约信息");
-        yyxx.setHref("/appiont/list");
+        yyxx.setHref("/outpatient/index");
         yyxx.setFontFamily("ok-icon");
         yyxx.setIcon("&#xe6b8;");
         list.add(menu);

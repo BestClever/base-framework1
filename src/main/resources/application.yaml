@@ -13,6 +13,7 @@ spring:
   thymeleaf:
     cache: false
     enabled: true
+    prefix: classpath:/templates/
 mybatis-plus:
   mapper-locations: classpath:com/**/mapper/*.xml
   configuration:
