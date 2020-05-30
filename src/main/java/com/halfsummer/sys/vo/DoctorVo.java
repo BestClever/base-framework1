@@ -11,6 +11,7 @@ public class DoctorVo extends CloneSupport<DoctorVo> {
     public String departmentName;
     //医生科室
     public  String departmentProfile;
+    public  String outpatientDate;
     //医生门诊数量
     public String outpatientNumber;
 

@@ -5,6 +5,7 @@ import com.halfsummer.sys.domain.Doctor;
 import com.halfsummer.sys.mapper.DoctorMapper;
 import com.halfsummer.sys.service.DoctorService;
 import com.halfsummer.sys.vo.DoctorVo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
@@ -19,7 +20,8 @@ import java.util.List;
  */
 @Service
 public class DoctorServiceImpl extends ServiceImpl<DoctorMapper, Doctor> implements DoctorService {
-
+        @Autowired
+        private  DoctorMapper doctorMapper;
 
     @Override
     public boolean save(Doctor entity) {
@@ -38,6 +40,6 @@ public class DoctorServiceImpl extends ServiceImpl<DoctorMapper, Doctor> impleme
 
     @Override
     public List<Doctor> getdoctorList(DoctorVo doctorVo) {
-        return getdoctorList(doctorVo);
+        return doctorMapper.getdoctorList(doctorVo);
     }
 }

@@ -6,18 +6,17 @@ import com.halfsummer.baseframework.enums.CommonEnum;
 import com.halfsummer.baseframework.result.ResultDataUtil;
 import com.halfsummer.baseframework.result.ResultInfo;
 import com.halfsummer.sys.domain.Doctor;
+import com.halfsummer.sys.domain.User;
 import com.halfsummer.sys.service.DoctorService;
 import com.halfsummer.sys.service.OutpatientServer;
 import com.halfsummer.sys.service.UserService;
 import com.halfsummer.sys.vo.DoctorVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 
 /**
  * 医生模块Controller
