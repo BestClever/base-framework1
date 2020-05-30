@@ -1,6 +1,5 @@
 package com.halfsummer.sys.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.halfsummer.sys.domain.Doctor;
 import com.halfsummer.sys.mapper.DoctorMapper;
@@ -21,6 +20,8 @@ import java.util.List;
  */
 @Service
 public class DoctorServiceImpl extends ServiceImpl<DoctorMapper, Doctor> implements DoctorService {
+        @Autowired
+        private  DoctorMapper doctorMapper;
 
     @Override
     public boolean save(Doctor entity) {
@@ -38,8 +39,7 @@ public class DoctorServiceImpl extends ServiceImpl<DoctorMapper, Doctor> impleme
     }
 
     @Override
-    public List<Doctor> getdoctorList(DoctorVo doctorVo) {
-//        List<DoctorVo> doctorVos = doctorMapper.getdoctorList(doctorVo);
-        return null;
+    public List<DoctorVo> getdoctorList(DoctorVo doctorVo) {
+        return doctorMapper.getdoctorList(doctorVo);
     }
 }

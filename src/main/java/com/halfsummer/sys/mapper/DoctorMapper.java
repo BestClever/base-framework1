@@ -9,5 +9,5 @@ import java.util.Map;
 
 
 public interface DoctorMapper extends BaseMapper<Doctor> {
-    List<Map<String,Object>> getdoctorList(DoctorVo doctorVo);
+    List<DoctorVo> getdoctorList(DoctorVo doctorVo);
 }

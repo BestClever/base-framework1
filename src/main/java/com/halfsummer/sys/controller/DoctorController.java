@@ -51,7 +51,7 @@ public class DoctorController {
     @RequestMapping(value = "/doctorList")
     @ResponseBody
     public ResultInfo getdoctorList(DoctorVo doctorVo) {
-        List<Doctor> list = doctorService.getdoctorList(doctorVo);
+        List<DoctorVo> list = doctorService.getdoctorList(doctorVo);
         return ResultDataUtil.createSuccess(CommonEnum.SUCCESS).setData(list);
     }
 

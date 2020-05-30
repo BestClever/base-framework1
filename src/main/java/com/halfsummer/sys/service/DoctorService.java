@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface DoctorService extends IService<Doctor> {
 
-    List<Doctor> getdoctorList(DoctorVo doctorVo);
+    List<DoctorVo> getdoctorList(DoctorVo doctorVo);
 }

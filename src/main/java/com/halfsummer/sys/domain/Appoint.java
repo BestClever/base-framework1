@@ -26,6 +26,7 @@ public class Appoint {
         public String appointStageName;
         public String appointStatus;
         public String cancelId;
+        public String cancelName;
         public String medicalAdvice;
         public  String nsname;
 }
