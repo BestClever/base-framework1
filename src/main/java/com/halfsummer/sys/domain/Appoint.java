@@ -7,6 +7,8 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+//import java.sql.Date;
+
 /**
  * 预约类实体
  */
@@ -28,6 +30,6 @@ public class Appoint {
         public String cancelId;
         public String cancelName;
         public String medicalAdvice;
-        public  String nsname;
         public String patientType;
+        private String location;
 }

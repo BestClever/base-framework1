@@ -17,6 +17,9 @@ public class DoctorVo extends CloneSupport<DoctorVo> {
 
     //当前预约人数
     public String reservationNumber;
+    public  String outpatientNotice;
+    public String page ;
+    public String size;
 
 
 

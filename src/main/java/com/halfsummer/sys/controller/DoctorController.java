@@ -2,18 +2,23 @@ package com.halfsummer.sys.controller;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.halfsummer.baseframework.enums.CommonEnum;
+import com.halfsummer.baseframework.result.DataGridResultInfo;
+import com.halfsummer.baseframework.result.PageInfo;
 import com.halfsummer.baseframework.result.ResultDataUtil;
 import com.halfsummer.baseframework.result.ResultInfo;
 import com.halfsummer.sys.domain.Doctor;
-import com.halfsummer.sys.domain.User;
+import com.halfsummer.sys.mapper.DoctorMapper;
 import com.halfsummer.sys.service.DoctorService;
-import com.halfsummer.sys.service.OutpatientServer;
-import com.halfsummer.sys.service.UserService;
 import com.halfsummer.sys.vo.DoctorVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -26,6 +31,8 @@ import java.util.List;
 public class DoctorController {
     @Autowired
     private DoctorService doctorService;
+    @Autowired
+    private DoctorMapper doctorMapper;
 
     @RequestMapping(value = "/list")
     @ResponseBody
@@ -50,10 +57,28 @@ public class DoctorController {
      */
     @RequestMapping(value = "/doctorList")
     @ResponseBody
-    public ResultInfo getdoctorList(DoctorVo doctorVo) {
-        List<DoctorVo> list = doctorService.getdoctorList(doctorVo);
-        return ResultDataUtil.createSuccess(CommonEnum.SUCCESS).setData(list);
+    public DataGridResultInfo getdoctorList(@RequestBody DoctorVo doctorVo) {
+        QueryWrapper<DoctorVo> wrapper = new QueryWrapper<DoctorVo>();
+        wrapper.eq("role_code","2");
+        if (doctorVo.getDepartmentName() !=null){
+            wrapper.eq("user_name",doctorVo.getDepartmentName());
+        }
+        if (doctorVo.getOutpatientDate() != null){
+            wrapper .eq("outpatient_date",doctorVo.getOutpatientDate());
+        }
+        if (doctorVo.getDepartmentProfile() != null){
+            wrapper.eq("department_name",doctorVo.getDepartmentProfile());
+        }
+        Page<DoctorVo> page = new Page<DoctorVo>(Long.valueOf(doctorVo.page),Long.valueOf(doctorVo.size));
+        IPage<DoctorVo> doctorVoIPage = doctorMapper.selectMyPage(page, wrapper);
+
+        PageInfo pageInfo = new PageInfo();
+        pageInfo.setList(doctorVoIPage.getRecords());
+        pageInfo.setTotal(doctorVoIPage.getTotal());
+        return  ResultDataUtil.createQueryResult(pageInfo);
+
     }
+
 
 
 

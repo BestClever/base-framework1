@@ -17,4 +17,5 @@ public class AppointVo {
     public String medicalAdvice;
     public  String nsname;
     public String patientType;//1:门诊患者2:回诊患者
+    private String location;
 }

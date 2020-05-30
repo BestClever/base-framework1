@@ -37,13 +37,12 @@
             d.department_name departmentProfile,
             o.outpatient_date outpatientDate,
             o.outpatient_id outpatientNumber,
-            o.current_num reservationNumber
+            o.current_num reservationNumber,
+            o.outpatient_notice outpatientNotice
         FROM
             t_sys_user u
             LEFT JOIN t_sys_outpatient o ON u.user_id = o.doctor_id
             LEFT JOIN t_sys_department d ON u.department_id = d.department_id
-        WHERE
-            u.role_code = '2'
              ${ew.customSqlSegment}
     </select>
 
