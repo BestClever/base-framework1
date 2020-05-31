@@ -32,17 +32,20 @@
 
     <select id="selectMyPage" resultType="com.halfsummer.sys.vo.DoctorVo">
         SELECT
-            u.user_id departmentId,
-            u.user_name departmentName,
-            d.department_name departmentProfile,
-            o.outpatient_date outpatientDate,
-            o.outpatient_id outpatientNumber,
-            o.current_num reservationNumber,
-            o.outpatient_notice outpatientNotice
+            u.user_id departmentId ,
+            u.user_name departmentName ,
+            d.department_name departmentProfile ,
+            o.outpatient_date outpatientDate ,
+            o.outpatient_id outpatientNumber ,
+            o.current_num reservationNumber ,
+            o.outpatient_notice outpatientNotice ,
+            a.appoint_id ,
+            a.appoint_status
         FROM
             t_sys_user u
-            LEFT JOIN t_sys_outpatient o ON u.user_id = o.doctor_id
-            LEFT JOIN t_sys_department d ON u.department_id = d.department_id
+        LEFT JOIN t_sys_outpatient o ON u.user_id = o.doctor_id
+        LEFT JOIN t_sys_department d ON u.department_id = d.department_id
+        LEFT JOIN t_sys_appoint a ON a.outpatient_id = o.outpatient_id
              ${ew.customSqlSegment}
     </select>
 

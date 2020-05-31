@@ -186,7 +186,7 @@ public class AppointController {
 
 
     //患者电子病历接口
-    @RequestMapping(value = "/lineUp")
+    @RequestMapping(value = "/getEMR")
     @ResponseBody
     public ResultInfo getEMR( HttpServletRequest request) {
         QueryWrapper<Appoint> queryWrapper = new QueryWrapper<>();

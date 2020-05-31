@@ -10,6 +10,7 @@ import com.halfsummer.baseframework.result.PageInfo;
 import com.halfsummer.baseframework.result.ResultDataUtil;
 import com.halfsummer.baseframework.result.ResultInfo;
 import com.halfsummer.sys.domain.Doctor;
+import com.halfsummer.sys.domain.User;
 import com.halfsummer.sys.mapper.DoctorMapper;
 import com.halfsummer.sys.service.DoctorService;
 import com.halfsummer.sys.vo.DoctorVo;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 
@@ -57,7 +59,7 @@ public class DoctorController {
      */
     @RequestMapping(value = "/doctorList")
     @ResponseBody
-    public DataGridResultInfo getdoctorList(@RequestBody DoctorVo doctorVo) {
+    public DataGridResultInfo getdoctorList( DoctorVo doctorVo) {
         QueryWrapper<DoctorVo> wrapper = new QueryWrapper<DoctorVo>();
         wrapper.eq("role_code","2");
         if (doctorVo.getDepartmentName() !=null){
@@ -79,6 +81,19 @@ public class DoctorController {
 
     }
 
+    /**
+     * 预约查询接口(医生)
+     * @param doctorVo
+     * @return
+     */
+    @RequestMapping(value = "/checkToAppoint")
+    @ResponseBody
+    public DataGridResultInfo checkToAppointment( DoctorVo doctorVo, HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("user");
+
+        PageInfo pageInfo = new PageInfo();
+        return  ResultDataUtil.createQueryResult(pageInfo);
+    }
 
 
 
