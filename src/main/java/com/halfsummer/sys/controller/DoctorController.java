@@ -11,10 +11,12 @@ import com.halfsummer.baseframework.result.PageInfo;
 import com.halfsummer.baseframework.result.ResultDataUtil;
 import com.halfsummer.baseframework.result.ResultInfo;
 import com.halfsummer.sys.domain.Doctor;
+import com.halfsummer.sys.domain.Outpatient;
 import com.halfsummer.sys.domain.User;
 import com.halfsummer.sys.mapper.DoctorMapper;
 import com.halfsummer.sys.service.DoctorService;
 import com.halfsummer.sys.vo.DoctorVo;
+import com.halfsummer.sys.vo.OutpatientVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,7 +43,12 @@ public class DoctorController {
     public String doctor(){
         return "/doctor/doctor";
     }
+    ///doctor/huiz
 
+    @RequestMapping(value = "/huiz")
+    public String huiz(){
+        return "/doctor/huiz";
+    }
     @RequestMapping(value = "/work")
     public String work(){
         return "/doctor/work";
@@ -93,19 +100,6 @@ public class DoctorController {
 
     }
 
-    /**
-     * 预约查询接口(医生)
-     * @param doctorVo
-     * @return
-     */
-    @RequestMapping(value = "/checkToAppoint")
-    @ResponseBody
-    public DataGridResultInfo checkToAppointment( DoctorVo doctorVo, HttpServletRequest request) {
-        User user = (User) request.getSession().getAttribute("user");
-
-        PageInfo pageInfo = new PageInfo();
-        return  ResultDataUtil.createQueryResult(pageInfo);
-    }
 
 
 
@@ -148,6 +142,49 @@ public class DoctorController {
         }
 
     }
+
+
+    /**
+     * 预约查询接口(医生)
+     * @param doctorVo
+     * @return
+     */
+    @RequestMapping(value = "/checkToAppoint")
+    @ResponseBody
+    public DataGridResultInfo checkToAppointment(DoctorVo doctorVo, HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("user");
+        QueryWrapper<OutpatientVo> wrapper = new QueryWrapper<>();
+        wrapper.ne("appoint_status","1").isNotNull("appoint_id");
+
+        Page<OutpatientVo> page = new Page<OutpatientVo>(doctorVo.page,doctorVo.size);
+        IPage<OutpatientVo> doctorVoIPage = doctorMapper.checkToAppointment(page, wrapper);
+
+        PageInfo pageInfo = new PageInfo();
+        pageInfo.setList(doctorVoIPage.getRecords());
+        pageInfo.setTotal(doctorVoIPage.getTotal());
+        return  ResultDataUtil.createQueryResult(pageInfo);
+    }
+
+
+
+    /**
+     * 获取可回诊时间
+     */
+    @RequestMapping(value = "/getDate")
+    @ResponseBody
+    public ResultInfo getDate( HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("user");
+
+        QueryWrapper<Outpatient> wrapper = new QueryWrapper<>();
+
+        List<Outpatient> list = doctorMapper.getDatelist(user);
+
+        return ResultDataUtil.createSuccess(CommonEnum.SUCCESS).setData(list);
+
+
+    }
+
+
 
 
 }

@@ -11,9 +11,14 @@ public class OutpatientVo {
     public String outpatientDate;
     public String outpatientNumber;
     public String appointStatus;
+    public String appointDate;
     public String appointId;
-    public String outpatient_notice;
     public String outpatientNotice;
     public String currentNum;
+    public String patientId;//患者 id
+    public String patientName;//患者姓名
+    public String deptId;
+    public String patientType;
+
 
 }

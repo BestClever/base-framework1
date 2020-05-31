@@ -1,10 +1,215 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8"/>
+    <title>用户列表</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <link rel="stylesheet" href="../../css/oksub.css"/>
+    <script type="text/javascript" src="../../lib/loading/okLoading.js"></script>
 </head>
 <body>
+<div class="ok-body">
+    <div class="layui-row">
+        <form class="layui-form layui-col-md12 ok-search">
+            <input class="layui-input" placeholder="患者名称" autocomplete="off" id="departmentName" name="patientName"/>
+            <input class="layui-input" placeholder="门诊时间" autocomplete="off" name="outpatientDate" id="appointDate"/>
+            <button class="layui-btn" lay-submit="" lay-filter="search">
+                <i class="layui-icon">&#xe615;</i>
+            </button>
+        </form>
+    </div>
+    <!--数据表格-->
+    <table class="layui-hide" id="tableId" lay-filter="tableFilter"></table>
+</div>
+
+<div class="site-text" style="margin: 5%; display: none" id="window"  target="test123">
+    <form class="layui-form" id="book" method="post" lay-filter="example">
+        <div class="layui-form-item">
+            <label class="layui-form-label">回诊日期</label>
+            <div class="layui-input-block">
+                <input type="text" id="bid" name="bid" lay-verify="title" autocomplete="off" placeholder="请输入日期" class="layui-input">
+            </div>
+            <!--<div class="x-body layui-form">-->
+                <!--<select name="classifyId" id="classifyId">-->
+                    <!--<option value="">请选择</option>-->
+                <!--</select>-->
+            <!--</div>-->
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">医嘱</label>
+            <div class="layui-input-block">
+                <input type="text" id="bname" name="bname" lay-verify="title" autocomplete="off" placeholder="请输入医嘱" class="layui-input">
+            </div>
+        </div>
+    </form>
+</div>
+<!--js逻辑-->
+<script src="../lib/layui/layui.js"></script>
+<script th:inline="none">
+    layui.use(["element", "jquery", "table", "form", "laydate", "okLayer", "okUtils", "okMock"], function () {
+        let table = layui.table;
+        let form = layui.form;
+        let laydate = layui.laydate;
+        let okLayer = layui.okLayer;
+        let okUtils = layui.okUtils;
+        let okMock = layui.okMock;
+        let $ = layui.jquery;
+        // getClassify();
+
+        laydate.render({elem: "#outpatientDate", type: "datetime"});
+
+        okLoading.close($);//关闭 加载
+        let userTable = table.render({
+            elem: '#tableId',
+            url: okMock.api.checkToAppoint,
+            limit: 20,
+            page: true,
+            toolbar: true,
+            toolbar: "#toolbarTpl",
+            size: "sm",
+            cols: [[
+                {field: "patientId", title: "患者 id", sort: true},
+                {field: "patientName", title: "患者名称"},
+                {field: "appointDate", title: "预约时间"},
+                {field: "appointId", title: "预约号"},
+                {field: "patientType", title: "患者类型", templet: "#roleTpl"},
+                {field: "outpatientNotice", title: "业务内容", templet: "#statusTpl"},
+                {title: "操作", align: "center", fixed: "right", templet: "#operationTpl"}
+            ]],
+            done: function (res, curr, count) {
+                console.info(res, curr, count);
+            }
+        });
+
+        form.on("submit(search)", function (data) {
+            userTable.reload({
+                where: data.field,
+                page: {curr: 1}
+            });
+            return false;
+        });
+
+
+
+
+        table.on("tool(tableFilter)", function (obj) {
+            let data = obj.data;
+            switch (obj.event) {
+                case "appoint":
+                    appoint(data);
+                    break;
+                case "complete":
+                    complete(data);
+                    break;
+                case "cancel":
+                    cancel(data);
+                    break;
+                case "returnvisit":
+                    returnvisit(data);
+                    break;
+            }
+        });
+
+        function appoint(data) {
+
+            let url = "/appoint/cbook";
+            alert(url);
+            let type = "post";
+            let params={appointId:data.appointId,appointStatus:"4"};
+            okUtils.ajax(url,type,params,true).done(function (result) {
+                okUtils.tableSuccessMsg(result.msg);
+            }).fail(function () {
+
+            });
+        }
+        function complete(data) {
+            let url = okMock.api.cBook;
+            let type = "post";
+            let params={appointId:data.appointId,appointStatus:'5'};
+            okUtils.ajax(url,type,params,true).done(function (result) {
+                okUtils.tableSuccessMsg(result.msg);
+            }).fail(function () {
+
+            });
+        }
+        function cancel(data) {
+            let url = okMock.api.cancel;
+            let type = "post";
+            let params={appointId:data.appointId};
+            okUtils.ajax(url,type,params,true).done(function (result) {
+                okUtils.tableSuccessMsg(result.msg);
+            }).fail(function () {
+
+            });
+        }
+
+    function returnvisit(data) {
+
+        layer.open({
+            type: 1 //Page层类型
+            ,skin: 'layui-layer-molv'
+            ,area: ['380px', '270px']
+            ,title: ['填写回诊信息','font-size:18px']
+            ,btn: ['确定', '取消']
+            ,shadeClose: true
+            ,shade: 0 //遮罩透明度
+            ,maxmin: true //允许全屏最小化
+            ,content:$("#window")
+            ,success:	function(){
+
+
+            }
+            ,yes:function(){
+                let url = "/appoint/returnVisit";
+                let type = "post";
+                let params={appointId:data.appointId,medicalAdvice: $('#bname').val(),appointDate: $('#bid').val()};
+                okUtils.ajax(url,type,params,true).done(function (result) {
+                    okUtils.tableSuccessMsg(result.msg);
+                }).fail(function () {
+                    layer.closeAll();
+                });
+            }
+        });
+
+
+
+    }
+        // function getClassify() {
+        //     $.ajax({
+        //         url: '/doctor/getDate',
+        //         success: function (res) {
+        //             if (res.success) {
+        //                 alert("1");
+        //                 for (var i = 0; i < res.data.length; i++) {
+        //                     $("#classifyId").append("<option value=\"" + res.data[i].outpatientId + "\">" + res.data[i].outpatientDate + "</option>");
+        //                 }
+        //
+        //                 //重新渲染
+        //                 form.render("select");
+        //             } else {
+        //                 layer.msg(res.message);
+        //             }
+        //         }
+        //     });
+        // }
+
+    })
+</script>
+
+<!-- 行工具栏模板 -->
+<script type="text/html" id="operationTpl">
+    {{# if(d.appointStatus!='5'){ }}
+    {{# if(d.appointStatus=='2'){ }}
+    <a href="javascript:" class="layui-btn layui-btn-xs" title="预约" lay-event="appoint">开始诊断</a>
+    <a href="javascript:" class="layui-btn layui-btn-xs" title="预约" lay-event="cancel">取消预约</a>
+    {{# } else { }}
+    <a href="javascript:" class="layui-btn layui-btn-xs" title="预约" lay-event="complete">诊断完成</a>
+    {{# } }}
+    <a href="javascript:" class="layui-btn layui-btn-xs" title="预约" lay-event="returnvisit">回诊</a>
+    {{# } else { }}
+    <span class="layui-btn layui-btn-warm layui-btn-xs">该预约已取消</span>
+    {{# } }}
+</script>
 
 </body>
 </html>

@@ -8,10 +8,10 @@ public class AppointVo {
     public String userId;
     public String username;
     public String outpatientId;
-    public String c;
+    public String appointDate;
     public String appointStage;
     public String appointStageName;
-    public String appointStatus;
+    public String appointStatus;//预约状态
     public String cancelId;
     public String cancelName;
     public String medicalAdvice;

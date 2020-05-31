@@ -14,7 +14,9 @@ public enum ParameterEnum implements BaseInfoInterface {
 	// 参数定义
 	OUTPATIENT_SERVICE(200, "门诊"),
 	RETURN_VISIT(200, "回诊"),
-	WAITING_TIME(200,"30")
+	WAITING_TIME(200,"30"),
+	DEFAULT_NUMBER(200,"50"),
+	DEFAULT_WORK(200,"常规检查")
 
 
 

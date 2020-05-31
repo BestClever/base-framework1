@@ -23,7 +23,7 @@ public class Outpatient {
     public String doctorName;
     public String outpatientDate;
     public String outpatientNumber;
-    public String appointId;
     public String outpatientNotice;
     public String currentNum;
+    public String deptId;
 }

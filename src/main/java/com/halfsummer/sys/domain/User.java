@@ -30,6 +30,7 @@ public class User {
     private String phone;
     private String roleCode;//1:患者2:医生3:管理员
     private String roleName;
+    private String departmentId;
 
 
 

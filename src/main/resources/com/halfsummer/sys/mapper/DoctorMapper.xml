@@ -49,4 +49,31 @@
              ${ew.customSqlSegment}
     </select>
 
+    <select id="checkToAppointment" resultType="com.halfsummer.sys.vo.OutpatientVo">
+        SELECT
+            a.user_id patientId,
+            a.user_name patientName,
+            a.appoint_date,
+            a.appoint_id,
+            a.patient_type,
+            a.appoint_status,
+            o.outpatient_notice
+        FROM
+            t_sys_outpatient o
+        LEFT JOIN t_sys_appoint a ON a.outpatient_id = o.outpatient_id
+         ${ew.customSqlSegment}
+    </select>
+
+    <select id="getDatelist"  resultType="com.halfsummer.sys.vo.OutpatientVo" parameterType="com.halfsummer.sys.domain.User">
+        SELECT
+            outpatient_date,
+            o.outpatient_id
+        FROM
+            t_sys_outpatient o
+        WHERE
+            outpatient_number > current_num
+        and
+            doctor_id =  #{userId,jdbcType=VARCHAR}
+
+    </select>
 </mapper>

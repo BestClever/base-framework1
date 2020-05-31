@@ -5,11 +5,13 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.halfsummer.sys.domain.Doctor;
+import com.halfsummer.sys.domain.Outpatient;
+import com.halfsummer.sys.domain.User;
 import com.halfsummer.sys.vo.DoctorVo;
+import com.halfsummer.sys.vo.OutpatientVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-import java.util.Map;
 
 
 public interface DoctorMapper extends BaseMapper<Doctor> {
@@ -22,4 +24,8 @@ public interface DoctorMapper extends BaseMapper<Doctor> {
      * @return
      */
     IPage<DoctorVo> selectMyPage(IPage<DoctorVo> page, @Param(Constants.WRAPPER) Wrapper<DoctorVo> queryWrapper);
+
+    IPage<OutpatientVo> checkToAppointment(IPage<OutpatientVo> page,  @Param(Constants.WRAPPER) Wrapper<OutpatientVo> queryWrapper);
+
+    List<Outpatient> getDatelist(User user);
 }
