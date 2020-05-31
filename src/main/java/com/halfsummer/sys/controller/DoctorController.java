@@ -37,6 +37,16 @@ public class DoctorController {
     @Autowired
     private DoctorMapper doctorMapper;
 
+    @RequestMapping(value = "/doctor")
+    public String doctor(){
+        return "/doctor/doctor";
+    }
+
+    @RequestMapping(value = "/work")
+    public String work(){
+        return "/doctor/work";
+    }
+
     @RequestMapping(value = "/list")
     @ResponseBody
     public ResultInfo getAppointList() {

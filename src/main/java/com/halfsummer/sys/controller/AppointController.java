@@ -3,6 +3,7 @@ package com.halfsummer.sys.controller;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.halfsummer.baseframework.enums.CommonEnum;
@@ -77,7 +78,7 @@ public class AppointController {
         appoint.setUserName(user.getUserName());
         appoint.setAppointStatus("1");
         boolean key = false;
-        if (appoint.getAppointId() != null) {
+        if (StrUtil.isNotBlank(appoint.getAppointId())) {
             key = appointServer.updateById(appoint);
         } else {
             appoint.setAppointId(IdUtil.simpleUUID());

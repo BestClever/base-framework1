@@ -79,7 +79,8 @@
         });
 
         function appoint(data) {
-            let url = okMock.api.appointAdd;
+            debugger
+            let url = "/appoint/add";
             let type = "post";
             let params={outpatientId:data.outpatientNumber};
             okUtils.ajax(url,type,params,true).done(function (result) {

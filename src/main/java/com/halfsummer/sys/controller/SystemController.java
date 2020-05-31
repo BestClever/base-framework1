@@ -3,6 +3,8 @@ package com.halfsummer.sys.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author BestClever
  * @title: SysController
@@ -26,5 +28,11 @@ public class SystemController {
     @RequestMapping(value = "/welcom")
     public String welcom(){
         return "/sys/console";
+    }
+
+    @RequestMapping(value="/logout")
+    public String logout(HttpServletRequest request){
+        request.getSession().removeAttribute("user");
+        return "sys/login";
     }
 }

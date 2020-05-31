@@ -1,6 +1,7 @@
 package com.halfsummer.sys.controller;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.google.common.collect.Lists;
 import com.halfsummer.baseframework.enums.CommonEnum;
@@ -63,39 +64,79 @@ public class LoginController {
 
     @RequestMapping(value = "/navs")
     @ResponseBody
-    public List getNavs(){
+    public List getNavs(HttpServletRequest request){
+        User user = (User) request.getSession().getAttribute("user");
         List list = Lists.newArrayList();
-        /**
-         * private String title;//菜单名字
-         *     private String href;//连接地址
-         *     private String fontFamily;//字体
-         *     private String icon;//图标
-         *     private String spread;//是否展开
-         *     private String isCheck;
-         *
-         *     {
-         *     "title": "控制台",
-         *     "href": "/sys/welcom",
-         *     "fontFamily": "ok-icon",
-         *     "icon": "&#xe654;",
-         *     "spread": true,
-         *     "isCheck": true
-         *   }
-         */
-        Menu menu = new Menu();
-        menu.setTitle("控制台");
-        menu.setHref("/sys/welcom");
-        menu.setFontFamily("ok-icon");
-        menu.setIcon("&#xe654;");
-        menu.setSpread(true);
-        menu.setCheck(true);
-        Menu yyxx = new Menu();
-        yyxx.setTitle("预约信息");
-        yyxx.setHref("/outpatient/index");
-        yyxx.setFontFamily("ok-icon");
-        yyxx.setIcon("&#xe6b8;");
-        list.add(menu);
-        list.add(yyxx);
+        if (StrUtil.equals(user.getRoleCode(),"1")) {
+            /**
+             * private String title;//菜单名字
+             *     private String href;//连接地址
+             *     private String fontFamily;//字体
+             *     private String icon;//图标
+             *     private String spread;//是否展开
+             *     private String isCheck;
+             *
+             *     {
+             *     "title": "控制台",
+             *     "href": "/sys/welcom",
+             *     "fontFamily": "ok-icon",
+             *     "icon": "&#xe654;",
+             *     "spread": true,
+             *     "isCheck": true
+             *   }
+             */
+            Menu menu = new Menu();
+            menu.setTitle("控制台");
+            menu.setHref("/sys/welcom");
+            menu.setFontFamily("ok-icon");
+            menu.setIcon("&#xe654;");
+            menu.setSpread(true);
+            menu.setCheck(true);
+            Menu yyxx = new Menu();
+            yyxx.setTitle("预约信息");
+            yyxx.setHref("/outpatient/index");
+            yyxx.setFontFamily("ok-icon");
+            yyxx.setIcon("&#xe6b8;");
+            list.add(menu);
+            list.add(yyxx);
+        }else if(StrUtil.equals(user.getRoleCode(),"2")){
+            Menu menu = new Menu();
+            menu.setTitle("控制台");
+            menu.setHref("/sys/welcom");
+            menu.setFontFamily("ok-icon");
+            menu.setIcon("&#xe654;");
+            menu.setSpread(true);
+            menu.setCheck(true);
+            Menu doctor = new Menu();
+            doctor.setTitle("医生信息");
+            doctor.setHref("/doctor/doctor");
+            doctor.setFontFamily("ok-icon");
+            doctor.setIcon("&#xe66f;");
+            Menu work = new Menu();
+            work.setTitle("医生工作");
+            work.setHref("/doctor/work");
+            work.setFontFamily("ok-icon");
+            work.setIcon("&#xe705;");
+            list.add(menu);
+            list.add(work);
+            list.add(doctor);
+        }else if(StrUtil.equals(user.getRoleCode(),"3")){
+            Menu menu = new Menu();
+            menu.setTitle("控制台");
+            menu.setHref("/sys/welcom");
+            menu.setFontFamily("ok-icon");
+            menu.setIcon("&#xe654;");
+            menu.setSpread(true);
+            menu.setCheck(true);
+            Menu yyxx = new Menu();
+            yyxx.setTitle("预约信息");
+            yyxx.setHref("/outpatient/index");
+            yyxx.setFontFamily("ok-icon");
+            yyxx.setIcon("&#xe6b8;");
+            list.add(menu);
+            list.add(yyxx);
+        }
+
         return list;
     }
 }
