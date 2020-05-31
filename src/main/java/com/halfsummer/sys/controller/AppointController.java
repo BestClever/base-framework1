@@ -70,6 +70,9 @@ public class AppointController {
         User user = (User) request.getSession().getAttribute("user");
         Appoint appoint = new Appoint();
         BeanUtil.copyProperties(appointVo,appoint);
+        Outpatient outpatient = outpatientServer.getById(appoint.getOutpatientId());
+        appoint.setAppointDate(outpatient.getOutpatientDate());
+        appoint.setAppointStageName(outpatient.getOutpatientDate());
         appoint.setUserId(user.getUserId());
         appoint.setUserName(user.getUserName());
         appoint.setAppointStatus("1");
@@ -116,8 +119,8 @@ public class AppointController {
         User user = (User) request.getSession().getAttribute("user");
         int num ;
         appointVo.setAppointStatus("2");
-        appointVo.setCancelId(user.getUserId());
-        appointVo.setCancelName(user.getUserName());
+        appointVo.setUserId(user.getUserId());
+        appointVo.setUsername(user.getUserName());
         Appoint appoint = new Appoint();
         BeanUtil.copyProperties(appointVo,appoint);
         QueryWrapper<Appoint> queryWrapper = new QueryWrapper<>();
@@ -143,41 +146,30 @@ public class AppointController {
     /**
      * 取消预约
      */
-
-    /**
-     * 付款接口
-     */
-
     @RequestMapping(value = "/aCancellation")
     @ResponseBody
     public ResultInfo aCancellation(@RequestBody AppointVo appointVo, HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute("user");
-        int num ;
-        appointVo.setAppointStatus("2");
+        appointVo.setAppointStatus("5");
         appointVo.setCancelId(user.getUserId());
         appointVo.setCancelName(user.getUserName());
         Appoint appoint = new Appoint();
         BeanUtil.copyProperties(appointVo,appoint);
         QueryWrapper<Appoint> queryWrapper = new QueryWrapper<>();
         List<Appoint> list = appointServer.list(queryWrapper.eq("outpatient_id",appoint.getOutpatientId()).eq("appoint_status","2"));
-        if (list == null){
-            num = 1;
-        }else {
-            num = list.size()+1;
-        }
-        appoint.setLocation(String.valueOf(num));
         boolean key = appointServer.updateById(appoint);
         if (key) {
 //            预约成功后增加当前预约人数
             appoint = appointServer.getById(appoint.appointId);
             Outpatient outpatient = outpatientServer.getById(appoint.getOutpatientId());
-            outpatient.setCurrentNum(String.valueOf(Integer.valueOf(outpatient.getCurrentNum())+1));
+            outpatient.setCurrentNum(String.valueOf(Integer.valueOf(outpatient.getCurrentNum())-1));
             outpatientServer.updateById(outpatient);
             return ResultDataUtil.createSuccess(CommonEnum.SUCCESS);
         } else {
             return ResultDataUtil.createSuccess(CommonEnum.SAVE_FAILED);
         }
     }
+
 
     /**
      *    排队接口
