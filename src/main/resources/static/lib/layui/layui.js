@@ -1,4 +1,7 @@
 /** layui-v2.5.6 MIT License By https://www.layui.com */
+var pathName = window.location.pathname.substring(1);
+var webName = pathName == '' ? '' : pathName.substring(0, pathName.indexOf('/'));
+var BaseUrl= window.location.protocol + '//' + window.location.host + '/'+ webName + '/';
 if (!Object.assign) {
     Object.defineProperty(Object, "assign", {
         enumerable: false,

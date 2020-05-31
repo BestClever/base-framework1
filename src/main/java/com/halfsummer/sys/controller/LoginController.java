@@ -128,13 +128,18 @@ public class LoginController {
             menu.setIcon("&#xe654;");
             menu.setSpread(true);
             menu.setCheck(true);
+            Menu mzxx = new Menu();
+            mzxx.setTitle("门诊信息");
+            mzxx.setHref("/outpatient/index");
+            mzxx.setFontFamily("ok-icon");
+            mzxx.setIcon("&#xe6b8;");
             Menu yyxx = new Menu();
             yyxx.setTitle("预约信息");
-            yyxx.setHref("/outpatient/index");
+            yyxx.setHref("/appoint/index");
             yyxx.setFontFamily("ok-icon");
             yyxx.setIcon("&#xe6b8;");
             list.add(menu);
-            list.add(yyxx);
+            list.add(mzxx);
         }
 
         return list;

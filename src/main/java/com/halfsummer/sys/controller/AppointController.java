@@ -45,6 +45,11 @@ public class AppointController {
     @Autowired
     private UserService userService;
 
+    @RequestMapping(value = "/index")
+    public String index(){
+        return "/outpatient/appointIndex";
+    }
+
     @RequestMapping(value = "/list")
     @ResponseBody
     public DataGridResultInfo getAppointList() {

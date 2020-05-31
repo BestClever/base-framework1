@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head>
+        <meta charset="utf-8"/>
+        <title>预约信息</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+        <link rel="stylesheet" href="../../css/oksub.css"/>
+        <script type="text/javascript" src="../../lib/loading/okLoading.js"></script>
+    </head>
+</head>
+<body>
+<div class="ok-body">
+    <div class="layui-row">
+        <form class="layui-form layui-col-md12 ok-search">
+            <input class="layui-input" placeholder="医生名称" autocomplete="off" id="departmentName" name="departmentName"/>
+            <input class="layui-input" placeholder="科室名称" autocomplete="off" id="departmentProfile" name="departmentProfile"/>
+            <input class="layui-input" placeholder="门诊时间" autocomplete="off" name="outpatientDate" id="outpatientDate"/>
+            <button class="layui-btn" lay-submit="" lay-filter="search">
+                <i class="layui-icon">&#xe615;</i>
+            </button>
+        </form>
+    </div>
+    <!--数据表格-->
+    <table class="layui-hide" id="tableId" lay-filter="tableFilter"></table>
+</div>
+<!--js逻辑-->
+<script src="../lib/layui/layui.js"></script>
+<script th:inline="none">
+    layui.use(["element", "jquery", "table", "form", "laydate", "okLayer", "okUtils", "okMock"], function () {
+        let table = layui.table;
+        let form = layui.form;
+        let laydate = layui.laydate;
+        let okLayer = layui.okLayer;
+        let okUtils = layui.okUtils;
+        let okMock = layui.okMock;
+        let $ = layui.jquery;
+
+        laydate.render({elem: "#outpatientDate", type: "datetime"});
+
+        okLoading.close($);//关闭 加载
+        let userTable = table.render({
+            elem: '#tableId',
+            url: okMock.api.doctorList,
+            limit: 20,
+            page: true,
+            toolbar: true,
+            toolbar: "#toolbarTpl",
+            size: "sm",
+            cols: [[
+                {field: "departmentId", title: "医生D", sort: true},
+                {field: "departmentName", title: "医生名称"},
+                {field: "departmentProfile", title: "科室"},
+                {field: "outpatientDate", title: "门诊时间"},
+                {field: "outpatientNumber", title: "门诊号"},
+                {field: "reservationNumber", title: "预约人数", templet: "#roleTpl"},
+                {field: "outpatientNotice", title: "业务内容", templet: "#statusTpl"},
+                {title: "操作", align: "center", fixed: "right", templet: "#operationTpl"}
+            ]],
+            done: function (res, curr, count) {
+                console.info(res, curr, count);
+            }
+        });
+
+        form.on("submit(search)", function (data) {
+            userTable.reload({
+                where: data.field,
+                page: {curr: 1}
+            });
+            return false;
+        });
+
+
+        table.on("tool(tableFilter)", function (obj) {
+            let data = obj.data;
+            switch (obj.event) {
+                case "appoint":
+                    appoint(data);
+                    break;
+            }
+        });
+
+        function appoint(data) {
+            debugger
+            let url = "/appoint/add";
+            let type = "post";
+            let params={outpatientId:data.outpatientNumber};
+            okUtils.ajax(url,type,params,true).done(function (result) {
+                okUtils.tableSuccessMsg(result.msg);
+            }).fail(function () {
+
+            });
+        }
+    })
+</script>
+
+<!-- 行工具栏模板 -->
+<script type="text/html" id="operationTpl">
+    {{# if(d.appointStatus=='1'){ }}
+    <span class="layui-btn layui-btn-warm layui-btn-xs">该医生您已经预约了</span>
+    {{# } else { }}
+    <a href="javascript:" class="layui-btn layui-btn-xs" title="预约" lay-event="appoint">预约</a>
+    {{# } }}
+</script>
+
+</body>
+</html>
