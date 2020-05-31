@@ -8,7 +8,7 @@ public class AppointVo {
     public String userId;
     public String username;
     public String outpatientId;
-    public String appointDate;
+    public String c;
     public String appointStage;
     public String appointStageName;
     public String appointStatus;
