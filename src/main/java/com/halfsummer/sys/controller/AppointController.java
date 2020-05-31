@@ -66,7 +66,7 @@ public class AppointController {
 
     @RequestMapping(value = "/add")
     @ResponseBody
-    public ResultInfo saveAppoint(@RequestBody AppointVo appointVo, HttpServletRequest request) {
+    public ResultInfo saveAppoint(AppointVo appointVo, HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute("user");
         Appoint appoint = new Appoint();
         BeanUtil.copyProperties(appointVo,appoint);
@@ -181,7 +181,7 @@ public class AppointController {
         LocationVo locationVo = new LocationVo() ;
         User user = (User) request.getSession().getAttribute("user");
 //        String today= DateUtil.today();
-        String today= "2020-05-30";
+        String today= "2020-05-30"; // TODO: 2020-05-31 0031
         Appoint appoint = appointServer.getOne(queryWrapper.eq("appoint_date",today).eq("user_id",user.getUserId()).eq("appoint_status","2"));
         Outpatient outpatient = outpatientServer.getById(appoint.getOutpatientId());
 

@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-   <meta charset="utf-8">
+   <meta charset="utf-8"/>
    <title>ok-admin v2.0 | 很赞的后台模版</title>
-   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-   <meta name="keywords" content="ok-admin v2.0,ok-admin网站后台模版,后台模版下载,后台管理系统模版,HTML后台模版下载">
-   <meta name="description" content="ok-admin v2.0，顾名思义，很赞的后台模版，它是一款基于Layui框架的轻量级扁平化且完全免费开源的网站后台管理系统模板，适合中小型CMS后台系统。">
+   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+   <meta name="keywords" content="ok-admin v2.0,ok-admin网站后台模版,后台模版下载,后台管理系统模版,HTML后台模版下载"/>
+   <meta name="description" content="ok-admin v2.0，顾名思义，很赞的后台模版，它是一款基于Layui框架的轻量级扁平化且完全免费开源的网站后台管理系统模板，适合中小型CMS后台系统。"/>
    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon"/>
-   <link rel="stylesheet" href="/css/okadmin.css">
+   <link rel="stylesheet" href="/css/okadmin.css"/>
    <link rel="stylesheet" href="/lib/loading/okLoading.css"/>
    <script type="text/javascript" src="/./js/okconfig.js"></script>
    <script type="text/javascript" src="/lib/loading/okLoading.js"></script>
@@ -64,7 +64,7 @@
 
          <li class="no-line layui-nav-item">
             <a href="javascript:">
-               <img src="/images/avatar.png" class="layui-nav-img">
+               <img src="/images/avatar.png" class="layui-nav-img"/>
                bobi
             </a>
             <dl id="userInfo" class="layui-nav-child">
@@ -96,7 +96,7 @@
          <div class="okadmin-logo">医院门诊预约系统</div>
          <div class="user-photo">
             <a class="img" title="我的头像">
-               <img src="/images/avatar.png" class="userAvatar">
+               <img src="/images/avatar.png" class="userAvatar"/>
             </a>
             <p>你好！<span class="userName">bobi</span>, 欢迎登录</p>
          </div>
@@ -104,7 +104,7 @@
          <ul id="navBar" class="layui-nav okadmin-nav okadmin-bg-20222A layui-nav-tree">
             <li class="layui-nav-item layui-this">
                <a href="javascript:" lay-id="1" data-url="/sys/welcom">
-                  <i is-close=false class="ok-icon">&#xe654;</i>
+                  <i is-close="false" class="ok-icon">&#xe654;</i>
                   控制台
                </a>
             </li>
@@ -114,7 +114,7 @@
 
    <!-- 内容主体区域 -->
    <div class="content-body">
-      <div class="layui-tab ok-tab" lay-filter="ok-tab" lay-allowClose="true" lay-unauto>
+      <div class="layui-tab ok-tab" lay-filter="ok-tab" lay-allowClose="true" lay-unauto="">
          <div data-id="left" id="okLeftMove"
               class="ok-icon ok-icon-back okadmin-tabs-control move-left okNavMove"></div>
          <div data-id="right" id="okRightMove"
@@ -135,7 +135,7 @@
          <ul id="tabTitle" class="layui-tab-title ok-tab-title not-scroll">
             <li class="layui-this" lay-id="1" tab="index">
                <i class="ok-icon">&#xe654;</i>
-               <cite is-close=false>控制台</cite>
+               <cite is-close="false">控制台</cite>
             </li>
          </ul>
 
@@ -190,7 +190,7 @@
                   <div class="layui-form-item">
                      <div class="layui-col-xs8 layui-col-sm8 layui-col-md8">
                         <input type="password"
-                               required
+                               required="true"
                                lay-verify="required"
                                id="lockPassword"
                                name="lock_password"
@@ -202,7 +202,7 @@
                      <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">
                         <button style="width: 100%;box-sizing:border-box;border-radius: 0;"
                                 type="button"
-                                lay-submit
+                                lay-submit=""
                                 lay-filter="lockSubmit"
                                 class="layui-btn lock-btn layui-btn-lg layui-btn-normal">确定</button>
                      </div>

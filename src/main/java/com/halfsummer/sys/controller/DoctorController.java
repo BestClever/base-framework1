@@ -1,6 +1,7 @@
 package com.halfsummer.sys.controller;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -60,18 +61,19 @@ public class DoctorController {
     @RequestMapping(value = "/doctorList")
     @ResponseBody
     public DataGridResultInfo getdoctorList( DoctorVo doctorVo) {
+
         QueryWrapper<DoctorVo> wrapper = new QueryWrapper<DoctorVo>();
         wrapper.eq("role_code","2");
-        if (doctorVo.getDepartmentName() !=null){
-            wrapper.eq("user_name",doctorVo.getDepartmentName());
+        if (StrUtil.isNotBlank(doctorVo.getDepartmentName())){
+            wrapper.like("u.user_name",doctorVo.getDepartmentName());
         }
-        if (doctorVo.getOutpatientDate() != null){
+        if (StrUtil.isNotBlank(doctorVo.getOutpatientDate() )){
             wrapper .eq("outpatient_date",doctorVo.getOutpatientDate());
         }
-        if (doctorVo.getDepartmentProfile() != null){
-            wrapper.eq("department_name",doctorVo.getDepartmentProfile());
+        if (StrUtil.isNotBlank(doctorVo.getDepartmentProfile())){
+            wrapper.like("d.department_name",doctorVo.getDepartmentProfile());
         }
-        Page<DoctorVo> page = new Page<DoctorVo>(Long.valueOf(doctorVo.page),Long.valueOf(doctorVo.size));
+        Page<DoctorVo> page = new Page<DoctorVo>(doctorVo.page,doctorVo.size);
         IPage<DoctorVo> doctorVoIPage = doctorMapper.selectMyPage(page, wrapper);
 
         PageInfo pageInfo = new PageInfo();
