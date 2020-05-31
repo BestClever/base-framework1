@@ -11,7 +11,7 @@
  Target Server Version : 50713
  File Encoding         : utf-8
 
- Date: 05/31/2020 03:48:17 AM
+ Date: 06/01/2020 01:50:49 AM
 */
 
 SET NAMES utf8mb4;
@@ -42,7 +42,7 @@ CREATE TABLE `t_sys_appoint` (
 --  Records of `t_sys_appoint`
 -- ----------------------------
 BEGIN;
-INSERT INTO `t_sys_appoint` VALUES ('05945b98076145bda96466d4dd8ccfc1', '1234', 'admin', '001', '2020-05-30', null, '2020-05-30', '2', null, null, null, '门诊', '1'), ('3b23a06ed0f54e419186f77e6e16cbfc', '123', 'admin', '001', '2020-05-30', null, '2020-05-30', '2', '123', 'admin', null, '门诊', '2');
+INSERT INTO `t_sys_appoint` VALUES ('05945b98076145bda96466d4dd8ccfc1', '1234', 'admin', '001', '2020-05-30', null, '2020-05-30', '5', '123', 'admin', null, '门诊', '1'), ('2adf9fd5778041ec8940db6b2b5a8dce', '123', 'admin', '001', '2020-05-30', '', '2020-05-30', '6', '123', 'admin', null, '回诊', '1'), ('3b23a06ed0f54e419186f77e6e16cbfc', '123', 'admin', '001', '2020-05-30', null, '2020-05-30', '4', '123', 'admin', null, '门诊', '2');
 COMMIT;
 
 -- ----------------------------
@@ -83,7 +83,14 @@ CREATE TABLE `t_sys_information` (
   `introduction` text COMMENT '医院简介',
   `announcement` text COMMENT '医院公告',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+
+-- ----------------------------
+--  Records of `t_sys_information`
+-- ----------------------------
+BEGIN;
+INSERT INTO `t_sys_information` VALUES ('1', '北京大学第三医院(简称“北医三院”)建于1958年,国家卫生健康委委管医院,集医疗、教学、科研、预防、康复与保健为一体的综合性三甲医院。', '长沙市第一医院位于湖南省长沙市开福区营盘路311号，始建于1920年，占地面积210余亩，是一所集医疗、教学、科研、预防保健、康复和公共卫生救治于一体的三级综合性医院。');
+COMMIT;
 
 -- ----------------------------
 --  Table structure for `t_sys_outpatient`
@@ -95,7 +102,6 @@ CREATE TABLE `t_sys_outpatient` (
   `doctor_name` varchar(15) CHARACTER SET utf8 DEFAULT NULL,
   `outpatient_date` date DEFAULT NULL,
   `outpatient_number` int(11) DEFAULT NULL,
-  `appoint_id` varchar(15) DEFAULT NULL,
   `outpatient_notice` varchar(200) CHARACTER SET utf8 DEFAULT NULL,
   `current_num` int(11) DEFAULT NULL,
   `dept_id` varchar(255) DEFAULT NULL,
@@ -106,7 +112,7 @@ CREATE TABLE `t_sys_outpatient` (
 --  Records of `t_sys_outpatient`
 -- ----------------------------
 BEGIN;
-INSERT INTO `t_sys_outpatient` VALUES ('001', '124', '张强', '2020-05-30', '100', null, '常规检查', '2', '103');
+INSERT INTO `t_sys_outpatient` VALUES ('001', '124', '张强', '2020-05-30', '100', '常规检查', '1', '103'), ('226618c7645b4257ba7b94de6605964d', '123', 'admin', '2020-06-03', '50', null, '0', '103'), ('237e322670024e3081aabc105a2bd867', '123', 'admin', '2020-06-06', '50', null, null, '103'), ('3d67d4913f05437e987dafc8218a8fe1', '123', 'admin', '2020-06-07', '50', null, null, '103'), ('4586937ebf734f8ea27c732167e6e658', '123', 'admin', '2020-05-31', '50', null, null, '103'), ('6b1b813774ce4198aa41cdff7217ac7a', '123', 'admin', '2020-06-04', '50', null, null, '103'), ('df232beb88cb492e8dfc6f53f10a962f', '123', 'admin', '2020-06-02', '50', null, null, '103'), ('ea9398e287494b17b9d0a51f2ba821ab', '123', 'admin', '2020-06-01', '50', null, null, '103'), ('ec720970c21b49c2b07878d51b54913d', '123', 'admin', '2020-06-05', '50', null, null, '103');
 COMMIT;
 
 -- ----------------------------
@@ -130,7 +136,7 @@ CREATE TABLE `t_sys_user` (
 --  Records of `t_sys_user`
 -- ----------------------------
 BEGIN;
-INSERT INTO `t_sys_user` VALUES ('123', 'admin', '123456', '1', '2020-05-22', '12247222669', '3', '管理员', null), ('124', '张强', '123', '1', '2020-05-29', '12222222222', '2', '医生', '103');
+INSERT INTO `t_sys_user` VALUES ('123', 'admin', '123456', '1', '2020-05-22', '12247222669', '3', '管理员', null), ('124', '张强', '123456', '1', '2020-05-29', '12222222222', '2', '医生', '103');
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;

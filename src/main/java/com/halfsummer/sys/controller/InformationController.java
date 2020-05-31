@@ -4,16 +4,16 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.halfsummer.baseframework.enums.CommonEnum;
 import com.halfsummer.baseframework.result.ResultDataUtil;
 import com.halfsummer.baseframework.result.ResultInfo;
-import com.halfsummer.sys.domain.Autoincremen;
 import com.halfsummer.sys.domain.Information;
-import com.halfsummer.sys.service.AutoincremenServer;
 import com.halfsummer.sys.service.InformationServer;
+import com.halfsummer.sys.vo.DoctorVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -43,6 +43,19 @@ public class InformationController {
         } else {
             return ResultDataUtil.createSuccess(CommonEnum.SAVE_FAILED);
         }
+
+    }
+
+    /**
+     *
+     */
+    @RequestMapping(value = "/getClassify")
+    @ResponseBody
+    public ResultInfo getClassify(DoctorVo doctorVo, HttpServletRequest request) {
+        Information information = informationServer.getById("1");
+
+        return ResultDataUtil.createSuccess(CommonEnum.SUCCESS).setData(information);
+
 
     }
 

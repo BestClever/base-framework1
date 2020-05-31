@@ -42,7 +42,28 @@
             </div>
         </div>
     </form>
+
 </div>
+<div class="site-text" style="margin: 5%; display: none" id="windows"  target="test123">
+    <form class="layui-form" id="books" method="post" lay-filter="example">
+        <div class="layui-form-item">
+            <label class="layui-form-label">门诊数</label>
+            <div class="layui-input-block">
+                <input type="text" id="bids" name="bid" lay-verify="title" autocomplete="off" placeholder="请输入门诊数" class="layui-input">
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-radius layui-btn-disabled"  id="keyname"></button>
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckData">修改</button>
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckData">发布工作</button>
+    </div>
+</script>
 <!--js逻辑-->
 <script src="../lib/layui/layui.js"></script>
 <script th:inline="none">
@@ -54,7 +75,7 @@
         let okUtils = layui.okUtils;
         let okMock = layui.okMock;
         let $ = layui.jquery;
-        // getClassify();
+        getClassify();
 
         laydate.render({elem: "#outpatientDate", type: "datetime"});
 
@@ -65,7 +86,7 @@
             limit: 20,
             page: true,
             toolbar: true,
-            toolbar: "#toolbarTpl",
+            toolbar: '#toolbarDemo',
             size: "sm",
             cols: [[
                 {field: "patientId", title: "患者 id", sort: true},
@@ -107,8 +128,13 @@
                 case "returnvisit":
                     returnvisit(data);
                     break;
+                case 'getCheckData':
+                    outpatientNumber();
+                    break;
             }
         });
+
+
 
         function appoint(data) {
 
@@ -143,6 +169,26 @@
             });
         }
 
+        function outpatientNumber() {
+            layer.open({
+                type: 1 //Page层类型
+                ,skin: 'layui-layer-molv'
+                ,area: ['380px', '270px']
+                ,title: ['填写修改门诊数','font-size:18px']
+                ,btn: ['确定', '取消']
+                ,shadeClose: true
+                ,shade: 0 //遮罩透明度
+                ,maxmin: true //允许全屏最小化
+                ,content:$("#windows")
+                ,success:	function(){
+
+
+                } ,yes:function(){
+                }
+            });
+
+        }
+
     function returnvisit(data) {
 
         layer.open({
@@ -165,8 +211,9 @@
                 let params={appointId:data.appointId,medicalAdvice: $('#bname').val(),appointDate: $('#bid').val()};
                 okUtils.ajax(url,type,params,true).done(function (result) {
                     okUtils.tableSuccessMsg(result.msg);
-                }).fail(function () {
                     layer.closeAll();
+                }).fail(function () {
+
                 });
             }
         });
@@ -174,24 +221,17 @@
 
 
     }
-        // function getClassify() {
-        //     $.ajax({
-        //         url: '/doctor/getDate',
-        //         success: function (res) {
-        //             if (res.success) {
-        //                 alert("1");
-        //                 for (var i = 0; i < res.data.length; i++) {
-        //                     $("#classifyId").append("<option value=\"" + res.data[i].outpatientId + "\">" + res.data[i].outpatientDate + "</option>");
-        //                 }
-        //
-        //                 //重新渲染
-        //                 form.render("select");
-        //             } else {
-        //                 layer.msg(res.message);
-        //             }
-        //         }
-        //     });
-        // }
+        function getClassify() {
+            let url = "/doctor/information";
+            let type = "post";
+            let params={};
+            okUtils.ajax(url,type,params,true).done(function (result) {
+                // okUtils.tableSuccessMsg(result.data);
+                $('#keyname').text('今日门诊数:'+result.data.outpatientNumber);
+            }).fail(function () {
+
+            });
+        }
 
     })
 </script>

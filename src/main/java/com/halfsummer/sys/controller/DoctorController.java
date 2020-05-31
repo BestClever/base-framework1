@@ -1,11 +1,13 @@
 package com.halfsummer.sys.controller;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.halfsummer.baseframework.enums.CommonEnum;
+import com.halfsummer.baseframework.enums.ParameterEnum;
 import com.halfsummer.baseframework.result.DataGridResultInfo;
 import com.halfsummer.baseframework.result.PageInfo;
 import com.halfsummer.baseframework.result.ResultDataUtil;
@@ -14,7 +16,10 @@ import com.halfsummer.sys.domain.Doctor;
 import com.halfsummer.sys.domain.Outpatient;
 import com.halfsummer.sys.domain.User;
 import com.halfsummer.sys.mapper.DoctorMapper;
+import com.halfsummer.sys.service.AutoincremenServer;
 import com.halfsummer.sys.service.DoctorService;
+import com.halfsummer.sys.service.OutpatientServer;
+import com.halfsummer.sys.service.UserService;
 import com.halfsummer.sys.vo.DoctorVo;
 import com.halfsummer.sys.vo.OutpatientVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +43,12 @@ public class DoctorController {
     private DoctorService doctorService;
     @Autowired
     private DoctorMapper doctorMapper;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private OutpatientServer outpatientServer;
+    @Autowired
+    private AutoincremenServer autoincremenServer;
 
     @RequestMapping(value = "/doctor")
     public String doctor(){
@@ -45,10 +56,7 @@ public class DoctorController {
     }
     ///doctor/huiz
 
-    @RequestMapping(value = "/huiz")
-    public String huiz(){
-        return "/doctor/huiz";
-    }
+
     @RequestMapping(value = "/work")
     public String work(){
         return "/doctor/work";
@@ -175,7 +183,7 @@ public class DoctorController {
     public ResultInfo getDate( HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute("user");
 
-        QueryWrapper<Outpatient> wrapper = new QueryWrapper<>();
+
 
         List<Outpatient> list = doctorMapper.getDatelist(user);
 
@@ -184,7 +192,47 @@ public class DoctorController {
 
     }
 
+    //
 
+    /**
+     * 医生信息展示
+     */
+    @RequestMapping(value = "/information")
+    @ResponseBody
+    public ResultInfo information( HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("user");
+
+       user = userService.getById(user.getUserId());
+        QueryWrapper<Outpatient> wrapper = new QueryWrapper<>();
+        Outpatient outpatient = outpatientServer.getOne(wrapper.eq("doctor_id",user.getUserId()).eq("outpatient_date", DateUtil.today()));
+       DoctorVo doctorVo = new DoctorVo();
+       doctorVo.setDepartmentName(user.getUserName());
+       if (outpatient != null){
+
+           doctorVo.setOutpatientNumber(outpatient.getOutpatientNumber());
+       }
+        doctorVo.setOutpatientNumber(ParameterEnum.DEFAULT_NUMBER.getResultMsg());
+        return ResultDataUtil.createSuccess(CommonEnum.SUCCESS).setData(doctorVo);
+
+
+    }
+    /**
+     * 门诊数量修改
+     */
+    @RequestMapping(value = "/modifyNumber")
+    @ResponseBody
+    public ResultInfo modifyNumber(DoctorVo doctorVo, HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("user");
+        user = userService.getById(user.getUserId());
+        QueryWrapper<Outpatient> wrapper = new QueryWrapper<>();
+        Outpatient outpatient = outpatientServer.getOne(wrapper.eq("doctor_id",user.getUserId()).eq("outpatient_date", DateUtil.today()));
+        outpatient.setOutpatientNumber(doctorVo.getOutpatientNumber());
+        outpatientServer.updateById(outpatient);
+
+        return ResultDataUtil.createSuccess(CommonEnum.SUCCESS);
+
+
+    }
 
 
 }
