@@ -11,16 +11,6 @@
 </head>
 <body>
 <div class="ok-body">
-    <div class="layui-row">
-        <form class="layui-form layui-col-md12 ok-search">
-            <input class="layui-input" placeholder="医生名称" autocomplete="off" id="departmentName" name="departmentName"/>
-            <input class="layui-input" placeholder="科室名称" autocomplete="off" id="departmentProfile" name="departmentProfile"/>
-            <input class="layui-input" placeholder="门诊时间" autocomplete="off" name="outpatientDate" id="outpatientDate"/>
-            <button class="layui-btn" lay-submit="" lay-filter="search">
-                <i class="layui-icon">&#xe615;</i>
-            </button>
-        </form>
-    </div>
     <!--数据表格-->
     <table class="layui-hide" id="tableId" lay-filter="tableFilter"></table>
 </div>
@@ -41,20 +31,20 @@
         okLoading.close($);//关闭 加载
         let userTable = table.render({
             elem: '#tableId',
-            url: okMock.api.doctorList,
+            url: okMock.api.appointList,
             limit: 20,
             page: true,
             toolbar: true,
             toolbar: "#toolbarTpl",
             size: "sm",
             cols: [[
-                {field: "departmentId", title: "医生D", sort: true},
-                {field: "departmentName", title: "医生名称"},
-                {field: "departmentProfile", title: "科室"},
+                {field: "userName", title: "预约人名称", sort: true},
+                {field: "appointDate", title: "预约日期"},
+                {field: "appointStageName", title: "预约时间段"},
                 {field: "outpatientDate", title: "门诊时间"},
-                {field: "outpatientNumber", title: "门诊号"},
-                {field: "reservationNumber", title: "预约人数", templet: "#roleTpl"},
-                {field: "outpatientNotice", title: "业务内容", templet: "#statusTpl"},
+                {field: "cancelName", title: "取消人"},
+                {field: "patientType", title: "预约类型", templet: "#appintTypeTpl"},
+                {field: "appointStatus", title: "预约状态", templet: "#statusTpl"},
                 {title: "操作", align: "center", fixed: "right", templet: "#operationTpl"}
             ]],
             done: function (res, curr, count) {
@@ -74,18 +64,18 @@
         table.on("tool(tableFilter)", function (obj) {
             let data = obj.data;
             switch (obj.event) {
-                case "appoint":
-                    appoint(data);
+                case "appointCancel":
+                    appointCancel(data);
                     break;
             }
         });
 
-        function appoint(data) {
+        function appointCancel(data) {
             debugger
-            let url = "/appoint/add";
+            let url = "/appoint/aCancellation";
             let type = "post";
-            let params={outpatientId:data.outpatientNumber};
-            okUtils.ajax(url,type,params,true).done(function (result) {
+            let params = {outpatientId: data.outpatientNumber};
+            okUtils.ajax(url, type, params, true).done(function (result) {
                 okUtils.tableSuccessMsg(result.msg);
             }).fail(function () {
 
@@ -94,12 +84,33 @@
     })
 </script>
 
+<!-- 状态模板 -->
+<script type="text/html" id="statusTpl">
+    {{#  if(d.appointStatus == 2){ }}
+    <span class="layui-btn layui-btn-normal layui-btn-xs">预约</span>
+    {{#  } else if(d.appointStatus == 3) { }}
+    <span class="layui-btn layui-btn-warm layui-btn-xs">诊断中</span>
+    {{#  } else if(d.appointStatus == 4) {  }}
+    <span class="layui-btn layui-btn-normal layui-btn-xs">完成</span>
+    {{#  } else if(d.appointStatus == 5) { }}
+    <span class="layui-btn layui-btn-normal layui-btn-xs">取消</span>
+    {{#  } else if(d.appointStatus == 6) { }}
+    <span class="layui-btn layui-btn-normal layui-btn-xs">回诊</span>
+    {{# } }}
+</script>
+
+<script type="text/html" id="appintTypeTpl">
+    {{#  if(d.patientType == 1){ }}
+    <span class="layui-btn layui-btn-normal layui-btn-xs">非回诊</span>
+    {{#  } else if(d.patientType == 2) { }}
+    <span class="layui-btn layui-btn-warm layui-btn-xs">回诊</span>
+    {{# } }}
+</script>
+
 <!-- 行工具栏模板 -->
 <script type="text/html" id="operationTpl">
-    {{# if(d.appointStatus=='1'){ }}
-    <span class="layui-btn layui-btn-warm layui-btn-xs">该医生您已经预约了</span>
-    {{# } else { }}
-    <a href="javascript:" class="layui-btn layui-btn-xs" title="预约" lay-event="appoint">预约</a>
+    {{# if(d.appointStatus== 3){ }}
+    <a href="javascript:" class="layui-btn layui-btn-xs" title="取消预约" lay-event="appointCancel">取消预约</a>
     {{# } }}
 </script>
 

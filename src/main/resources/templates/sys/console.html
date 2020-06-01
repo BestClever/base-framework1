@@ -65,8 +65,10 @@
 			let params={};
 			okUtils.ajax(url,type,params,true).done(function (result) {
 				// okUtils.tableSuccessMsg(result.msg);
-				$("#announcement").text(result.data.announcement);
-				$("#introduction").text(result.data.introduction);
+				if(result.data){
+					$("#announcement").text(result.data.announcement);
+					$("#introduction").text(result.data.introduction);
+				}
 			}).fail(function () {
 
 			});

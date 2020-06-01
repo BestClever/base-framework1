@@ -157,7 +157,7 @@ public class AppointController {
      */
     @RequestMapping(value = "/aCancellation")
     @ResponseBody
-    public ResultInfo aCancellation(@RequestBody AppointVo appointVo, HttpServletRequest request) {
+    public ResultInfo aCancellation( AppointVo appointVo, HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute("user");
         appointVo.setAppointStatus("5");
         appointVo.setCancelId(user.getUserId());

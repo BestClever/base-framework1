@@ -35,4 +35,9 @@ public class SystemController {
         request.getSession().removeAttribute("user");
         return "sys/login";
     }
+
+    @RequestMapping(value = "/register")
+    public String register(){
+        return "/sys/register";
+    }
 }
