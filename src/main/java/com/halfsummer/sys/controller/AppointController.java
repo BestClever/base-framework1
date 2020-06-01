@@ -307,6 +307,24 @@ public class AppointController {
         return ResultDataUtil.createSuccess(CommonEnum.SUCCESS) ;
     }
 
+    /**
+     * 返回医嘱
+     */
+    @RequestMapping(value = "/getMedicalAdvice")
+    @ResponseBody
+    public ResultInfo getMedicalAdvice(  HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("user");
+        QueryWrapper<Appoint> queryWrappers = new QueryWrapper<>();
+        queryWrappers.eq("user_id",user.getUserId()).eq("appoint_date", DateUtil.today());
+        Appoint appoint = appointServer.getOne(queryWrappers);
+        if (appoint == null){
+            appoint = new Appoint();
+            appoint.setMedicalAdvice("等待医生填写");
+        }
+
+
+        return ResultDataUtil.createSuccess(CommonEnum.SUCCESS).setData(appoint) ;
+    }
 
 
 

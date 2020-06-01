@@ -112,15 +112,16 @@
         function appoint(data) {
 
             let url = "/doctor/induction";
-            alert(url);
             let type = "post";
-            let params={appointId:data.appointId,appointStatus:"4"};
+            let params={userId:data.userId};
             okUtils.ajax(url,type,params,true).done(function (result) {
                 okUtils.tableSuccessMsg(result.msg);
             }).fail(function () {
 
             });
         }
+
+
 
 
 
@@ -161,9 +162,9 @@
 
 <!-- 行工具栏模板 -->
 <script type="text/html" id="operationTpl">
-
+    {{# if(d.roleName=='患者'){ }}
     <a href="javascript:" class="layui-btn layui-btn-xs" title="入职" lay-event="appoint">入职</a>
-
+    {{# } }}
 </script>
 
 </body>

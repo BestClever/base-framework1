@@ -27,7 +27,6 @@ import com.halfsummer.sys.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -57,8 +56,6 @@ public class DoctorController {
     public String doctor(){
         return "/doctor/doctor";
     }
-    ///doctor/huiz
-
 
     @RequestMapping(value = "/work")
     public String work(){
@@ -294,6 +291,19 @@ public class DoctorController {
        user.setRoleName("医生");
         userService.updateById(user);
         return ResultDataUtil.createSuccess(CommonEnum.SUCCESS);
+
+
+    }
+
+    /**
+     * 查询当前用户信息
+     */
+    @RequestMapping(value = "/getMyu")
+    @ResponseBody
+    public ResultInfo getMyu(HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("user");
+         user = userService.getById(user.getUserId());
+        return ResultDataUtil.createSuccess(CommonEnum.SUCCESS).setData(user);
 
 
     }

@@ -46,7 +46,12 @@ public class OutpatientController {
 //        return "outpatient/doctor";
 //    }
 
-//
+
+    @RequestMapping(value = "/emr")
+    public String emq(){
+        return "outpatient/emr";
+    }
+
 
     @RequestMapping(value = "/administrator")
     public String administrator(){
