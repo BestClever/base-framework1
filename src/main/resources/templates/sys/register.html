@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="page-fill">
 <head>
     <meta charset="UTF-8">
     <title>ok-admin v2.0 | 很赞的后台模版 - 注册</title>
@@ -34,7 +34,7 @@
     <form class="layui-form ">
         <div class="layui-form-item tit">注册</div>
         <div class="layui-form-item input-item">
-            <label for="username">用户名</label>
+            <label for="userName">用户名</label>
             <input type="text" lay-verify="required" name="username" placeholder="请输入账号" autocomplete="off"
                    id="username" class="layui-input">
         </div>
@@ -99,7 +99,7 @@
          */
         form.on("submit(login)", function (data) {
             okLayer.greenTickMsg("注册成功,去登陆", function () {
-                window.location = "sys/login";
+                window.location = "doctor/addUser";
             });
             return false;
         });
