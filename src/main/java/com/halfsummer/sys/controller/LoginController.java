@@ -83,7 +83,7 @@ public class LoginController {
              *   }
              */
             Menu menu = new Menu();
-            menu.setTitle("控制台");
+            menu.setTitle("首页");
             menu.setHref("/sys/welcom");
             menu.setFontFamily("ok-icon");
             menu.setIcon("&#xe654;");
@@ -98,7 +98,7 @@ public class LoginController {
             list.add(yyxx);
         }else if(StrUtil.equals(user.getRoleCode(),"2")){
             Menu menu = new Menu();
-            menu.setTitle("控制台");
+            menu.setTitle("首页");
             menu.setHref("/sys/welcom");
             menu.setFontFamily("ok-icon");
             menu.setIcon("&#xe654;");
@@ -119,7 +119,7 @@ public class LoginController {
             list.add(doctor);
         }else if(StrUtil.equals(user.getRoleCode(),"3")){
             Menu menu = new Menu();
-            menu.setTitle("控制台");
+            menu.setTitle("首页");
             menu.setHref("/sys/welcom");
             menu.setFontFamily("ok-icon");
             menu.setIcon("&#xe654;");
