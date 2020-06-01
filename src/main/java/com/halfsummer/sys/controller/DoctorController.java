@@ -2,6 +2,7 @@ package com.halfsummer.sys.controller;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -78,6 +79,24 @@ public class DoctorController {
         BeanUtil.copyProperties(doctor,doctorVo);
         return ResultDataUtil.createSuccess(CommonEnum.SUCCESS).setData(doctorVo);
     }
+    /**
+     * 注册接口
+     */
+    @RequestMapping(value = "/addUser")
+    @ResponseBody
+    public ResultInfo saveUser(UserVo userVo) {
+        User user = new User();
+        BeanUtil.copyProperties(userVo,user);
+        user.setUserId(IdUtil.simpleUUID());
+        user.setRoleCode("1");
+        user.setRoleName("医生");
+        userService.save(user);
+
+        return ResultDataUtil.createSuccess(CommonEnum.SUCCESS);
+
+
+    }
+
 
     /**
      * 医生列表(患者)
