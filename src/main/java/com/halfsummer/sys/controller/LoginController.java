@@ -116,8 +116,8 @@ public class LoginController {
             grxx.setHref("/sys/information");
             grxx.setFontFamily("ok-icon");
             grxx.setIcon("&#xe6b8;");
-            list.add(mzxx);
             list.add(menu);
+            list.add(mzxx);
             list.add(yyxx);
             list.add(dzbl);
             list.add(grxx);
