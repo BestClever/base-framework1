@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -89,7 +90,9 @@ public class DoctorController {
         BeanUtil.copyProperties(userVo,user);
         user.setUserId(IdUtil.simpleUUID());
         user.setRoleCode("1");
-        user.setRoleName("医生");
+        user.setRoleName("病人");
+        user.setUserSex("1");
+        user.setBirthDay(DateUtil.formatLocalDateTime(LocalDateTime.now()));
         userService.save(user);
 
         return ResultDataUtil.createSuccess(CommonEnum.SUCCESS);
@@ -106,7 +109,7 @@ public class DoctorController {
     @RequestMapping(value = "/doctorList")
     @ResponseBody
     public DataGridResultInfo getdoctorList( DoctorVo doctorVo) {
-
+        doctorVo.setOutpatientDate(DateUtil.today());
         QueryWrapper<DoctorVo> wrapper = new QueryWrapper<DoctorVo>();
         wrapper.eq("role_code","2");
         if (StrUtil.isNotBlank(doctorVo.getDepartmentName())){
@@ -115,6 +118,7 @@ public class DoctorController {
         if (StrUtil.isNotBlank(doctorVo.getOutpatientDate() )){
             wrapper .eq("outpatient_date",doctorVo.getOutpatientDate());
         }
+        wrapper.isNull("a.appoint_id");
         if (StrUtil.isNotBlank(doctorVo.getDepartmentProfile())){
             wrapper.like("d.department_name",doctorVo.getDepartmentProfile());
         }

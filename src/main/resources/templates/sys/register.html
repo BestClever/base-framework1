@@ -35,7 +35,7 @@
         <div class="layui-form-item tit">注册</div>
         <div class="layui-form-item input-item">
             <label for="userName">用户名</label>
-            <input type="text" lay-verify="required" name="username" placeholder="请输入账号" autocomplete="off"
+            <input type="text" lay-verify="required" name="userName" placeholder="请输入账号" autocomplete="off"
                    id="username" class="layui-input">
         </div>
         <div class="layui-form-item input-item">
@@ -50,9 +50,9 @@
         </div>
         <div class="layui-form-item input-item">
             <label for="phone">输入手机号</label>
-            <input type="text" lay-verify="required|phone" name="text" placeholder="请输入手机号" autocomplete="off"
+            <input type="text" lay-verify="required|phone" name="phone" placeholder="请输入手机号" autocomplete="off"
                    id="phone" maxlength="11" class="layui-input">
-        </div>
+</div>
         <div class="layui-form-item">
             <button class="layui-btn layui-block" lay-filter="login" lay-submit="">注册</button>
         </div>
@@ -64,11 +64,12 @@
 <!--js逻辑-->
 <script src="../lib/layui/layui.js"></script>
 <script>
-    layui.use(["form", "okGVerify", "okLayer"], function () {
+    layui.use(["form", "okGVerify", "okLayer","okUtils"], function () {
         let form = layui.form;
         let $ = layui.jquery;
         let okGVerify = layui.okGVerify;
         let okLayer = layui.okLayer;
+        let okUtils = layui.okUtils;
         let regPhone = /^[1][0-9]{10}$/;
         /**手机号验证**/
         let setInter = '';
@@ -98,8 +99,16 @@
          * 表单提交
          */
         form.on("submit(login)", function (data) {
-            okLayer.greenTickMsg("注册成功,去登陆", function () {
-                window.location = "doctor/addUser";
+            // okLayer.greenTickMsg("注册成功,去登陆", function () {
+            //     window.location = "doctor/addUser";
+            // });
+            //let params =
+            okUtils.ajax('/doctor/addUser','post',data.field,true).done(function (date) {
+                okLayer.greenTickMsg(date.msg+",去登陆", function () {
+                    window.location = okUtils.baseUrl + "/sys/toLogin";
+                })
+            }).fail(function () {
+                
             });
             return false;
         });

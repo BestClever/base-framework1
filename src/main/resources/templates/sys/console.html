@@ -1,88 +1,105 @@
-
 <head>
-	<meta charset="utf-8"/>
-	<title>用户列表</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-	<link rel="stylesheet" href="../../css/oksub.css"/>
-	<script type="text/javascript" src="../../lib/loading/okLoading.js"></script>
+    <meta charset="utf-8"/>
+    <title>用户列表</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <link rel="stylesheet" href="../../css/oksub.css"/>
+    <script type="text/javascript" src="../../lib/loading/okLoading.js"></script>
 </head>
+<html xmlns:th="http://www.thymeleaf.org">
 <body>
 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-	<legend>医院信息</legend>
+    <legend>医院信息</legend>
 </fieldset>
 
 <div style="padding: 20px; background-color: #F2F2F2;">
-	<div class="layui-row layui-col-space15">
-		<div class="layui-col-md6">
-			<div class="layui-card">
-				<div class="layui-card-header">医院简介</div>
-				<div class="layui-card-body" id="introduction">
-					卡片式面板面板通常用于非白色背景色的主体内<br>
-					从而映衬出边框投影
-				</div>
-			</div>
-		</div>
-		<div class="layui-col-md6">
-			<div class="layui-card">
-				<div class="layui-card-header">医院公告</div>
-				<div class="layui-card-body" id="announcement">
+    <div class="layui-row layui-col-space15" id="adminInfo">
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header">医院简介</div>
+                <div class="layui-card-body" id="introduction">
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md6" >
+            <div class="layui-card">
+                <div class="layui-card-header">医院公告</div>
+                <div class="layui-card-body" id="announcement">
+                </div>
+            </div>
+        </div>
 
-				</div>
-			</div>
-		</div>
+    </div>
 
-	</div>
+
+    <div class="layui-row layui-col-space15" id="paintInfo" style="display: none;">
+        <div class="layui-card">
+            <div class="layui-card-header">排队信息</div>
+            <div class="layui-card-body" id="lineUp">
+            </div>
+        </div>
+    </div>
 </div>
 <!--js逻辑-->
 <script src="../lib/layui/layui.js"></script>
 <script th:inline="none">
-	layui.use(["element", "jquery", "table", "form", "laydate", "okLayer", "okUtils", "okMock"], function () {
-		let table = layui.table;
-		let form = layui.form;
-		let laydate = layui.laydate;
-		let okLayer = layui.okLayer;
-		let okUtils = layui.okUtils;
-		let okMock = layui.okMock;
-		let $ = layui.jquery;
-		getClassify();
+    layui.use(["element", "jquery", "table", "form", "laydate", "okLayer", "okUtils", "okMock"], function () {
+        let table = layui.table;
+        let form = layui.form;
+        let laydate = layui.laydate;
+        let okLayer = layui.okLayer;
+        let okUtils = layui.okUtils;
+        let okMock = layui.okMock;
+        let $ = layui.jquery;
+        getUserInfo();
+        getClassify();
+        laydate.render({elem: "#outpatientDate", type: "datetime"});
 
-		laydate.render({elem: "#outpatientDate", type: "datetime"});
-
-		okLoading.close($);//关闭 加载
-
-
-		form.on("submit(search)", function (data) {
-			userTable.reload({
-				where: data.field,
-				page: {curr: 1}
-			});
-			return false;
-		});
-
-		function getClassify() {
-			let url = "/information/getClassify";
-			let type = "post";
-			let params={};
-			okUtils.ajax(url,type,params,true).done(function (result) {
-				// okUtils.tableSuccessMsg(result.msg);
-				if(result.data){
-					$("#announcement").text(result.data.announcement);
-					$("#introduction").text(result.data.introduction);
-				}
-			}).fail(function () {
-
-			});
-		}
+        okLoading.close($);//关闭 加载
 
 
+        form.on("submit(search)", function (data) {
+            userTable.reload({
+                where: data.field,
+                page: {curr: 1}
+            });
+            return false;
+        });
 
+        function getClassify() {
+            let url = "/information/getClassify";
+            let type = "post";
+            let params = {};
+            okUtils.ajax(url, type, params, true).done(function (result) {
+                // okUtils.tableSuccessMsg(result.msg);
+                if (result.data) {
+                    $("#announcement").text(result.data.announcement);
+                    $("#introduction").text(result.data.introduction);
+                }
+            }).fail(function () {
 
+            });
+        }
 
-	})
+        // 判断 用户权限
+        function getUserInfo() {
+            let url = "/login/userInfo";
+            let type = "post";
+            let params = {};
+
+            okUtils.ajax(url, type, params, true).done(function (result) {
+                debugger
+                // okUtils.tableSuccessMsg(result.msg);
+                if (result.sucess) {
+                    if (result.data.roleCode == '1') {
+                        $("#paintInfo").css("display","block");
+                    }
+                }
+            }).fail(function () {
+
+            });
+        }
+    })
 </script>
-
-
-
 </body>
 </html>
 

@@ -59,6 +59,13 @@ public class LoginController {
         return ResultDataUtil.createSuccess(CommonEnum.SUCCESS).setData(list);
     }
 
+    @RequestMapping(value = "/userInfo")
+    @ResponseBody
+    public ResultInfo getUserInfo(HttpServletRequest request){
+        User user = (User)request.getSession().getAttribute("user");
+        return ResultDataUtil.createSuccess(CommonEnum.SUCCESS).setData(user);
+    }
+
     @RequestMapping(value = "/navs")
     @ResponseBody
     public List getNavs(HttpServletRequest request){
@@ -94,8 +101,14 @@ public class LoginController {
             yyxx.setHref("/outpatient/index");
             yyxx.setFontFamily("ok-icon");
             yyxx.setIcon("&#xe6b8;");
+            Menu myApoint = new Menu();
+            myApoint.setTitle("我的预约");
+            myApoint.setHref("/appoint/index");
+            myApoint.setFontFamily("ok-icon");
+            yyxx.setIcon("&#xe6b7;");
             list.add(menu);
             list.add(yyxx);
+            list.add(myApoint);
         }else if(StrUtil.equals(user.getRoleCode(),"2")){
             Menu menu = new Menu();
             menu.setTitle("首页");

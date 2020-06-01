@@ -20,7 +20,7 @@ import java.util.List;
 public class WebConfigurer implements WebMvcConfigurer {
 
     private static List<String> EXCLUDE_PATH = Arrays.asList("/","/login/login","/sys/toLogin",
-            "/sys/register","/erro","/css/**","/js/**","/lib/**","/images/**");
+            "/sys/register","/doctor/addUser","/erro","/css/**","/js/**","/lib/**","/images/**");
 
     @Autowired
     private LoginInterceptor loginInterceptor;
