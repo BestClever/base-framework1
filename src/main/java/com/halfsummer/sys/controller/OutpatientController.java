@@ -46,6 +46,12 @@ public class OutpatientController {
 //        return "outpatient/doctor";
 //    }
 
+//
+
+    @RequestMapping(value = "/administrator")
+    public String administrator(){
+        return "administrator/administrator";
+    }
     @RequestMapping(value = "/list")
     @ResponseBody
     public ResultInfo getOutpatientList() {

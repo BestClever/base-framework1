@@ -132,7 +132,7 @@ public class LoginController {
             mzxx.setIcon("&#xe6b8;");
             Menu yyxx = new Menu();
             yyxx.setTitle("管理员工作台");
-            yyxx.setHref("/administrator/administrator");
+            yyxx.setHref("/outpatient/administrator");
             yyxx.setFontFamily("ok-icon");
             yyxx.setIcon("&#xe6b8;");
             list.add(menu);

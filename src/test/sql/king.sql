@@ -11,7 +11,7 @@
  Target Server Version : 50717
  File Encoding         : 65001
 
- Date: 01/06/2020 10:47:25
+ Date: 01/06/2020 15:06:12
 */
 
 SET NAMES utf8mb4;
@@ -88,7 +88,7 @@ CREATE TABLE `t_sys_information`  (
 -- ----------------------------
 -- Records of t_sys_information
 -- ----------------------------
-INSERT INTO `t_sys_information` VALUES (1, '1', '1');
+INSERT INTO `t_sys_information` VALUES (1, '北京大学第三医院(简称“北医三院”)建于1958年,国家卫生健康委委管医院,集医疗、教学、科研、预防、康复与保健为一体的综合性三甲医院。', '长沙市第一医院位于湖南省长沙市开福区营盘路311号，始建于1920年，占地面积210余亩，是一所集医疗、教学、科研、预防保健、康复和公共卫生救治于一体的三级综合性医院。');
 
 -- ----------------------------
 -- Table structure for t_sys_outpatient
