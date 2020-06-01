@@ -40,4 +40,8 @@ public class SystemController {
     public String register(){
         return "/sys/register";
     }
+    @RequestMapping(value = "/information")
+    public String information(){
+        return "/sys/information";
+    }
 }

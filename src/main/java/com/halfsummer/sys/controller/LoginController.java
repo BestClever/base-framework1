@@ -111,10 +111,16 @@ public class LoginController {
             dzbl.setHref("/outpatient/emr");
             dzbl.setFontFamily("ok-icon");
             dzbl.setIcon("&#xe6b8;");
+            Menu grxx = new Menu();
+            grxx.setTitle("个人信息");
+            grxx.setHref("/sys/information");
+            grxx.setFontFamily("ok-icon");
+            grxx.setIcon("&#xe6b8;");
             list.add(mzxx);
             list.add(menu);
             list.add(yyxx);
             list.add(dzbl);
+            list.add(grxx);
         }else if(StrUtil.equals(user.getRoleCode(),"2")){
             Menu menu = new Menu();
             menu.setTitle("首页");

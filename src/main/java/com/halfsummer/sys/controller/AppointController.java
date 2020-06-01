@@ -213,12 +213,12 @@ public class AppointController {
         QueryWrapper<Appoint> queryWrapper = new QueryWrapper<>();
         LocationVo locationVo = new LocationVo() ;
         User user = (User) request.getSession().getAttribute("user");
-//        String today= DateUtil.today();
-        String today= "2020-05-30"; // TODO: 2020-05-31 0031
+        String today= DateUtil.today();
+//        String today= "2020-05-30"; // TODO: 2020-05-31 0031
         Appoint appoint = appointServer.getOne(queryWrapper.eq("appoint_date",today).eq("user_id",user.getUserId()).eq("appoint_status","2"));
-        Outpatient outpatient = outpatientServer.getById(appoint.getOutpatientId());
 
         if (appoint != null){
+            Outpatient outpatient = outpatientServer.getById(appoint.getOutpatientId());
             //进行队列筛选
             queryWrapper= new QueryWrapper<>();
             List<Appoint> list = appointServer.list(queryWrapper

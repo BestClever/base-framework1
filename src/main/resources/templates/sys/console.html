@@ -34,7 +34,8 @@
     <div class="layui-row layui-col-space15" id="paintInfo" style="display: none;">
         <div class="layui-card">
             <div class="layui-card-header">排队信息</div>
-            <div class="layui-card-body" id="lineUp">
+            <div class="layui-card-body" id="lineUp" >
+
             </div>
         </div>
     </div>
@@ -91,7 +92,27 @@
                 if (result.sucess) {
                     if (result.data.roleCode == '1') {
                         $("#paintInfo").css("display","block");
+                        lineUp();
                     }
+                }
+            }).fail(function () {
+
+            });
+        }
+        // 判断 用户权限
+        function lineUp() {
+            let url = "/appoint/lineUp";
+            let type = "post";
+            let params = {};
+            okUtils.ajax(url, type, params, true).done(function (result) {
+                // okUtils.tableSuccessMsg(result.msg);
+                if (result.code != '10086') {
+                        let fuck = "前方人数: "+result.data.peopleNum+" 还需等待:  "+result.data.peopleNum+" 您的就诊医生为:  "+result.data.doctorName;
+
+                    $("#lineUp").append('<p>'+fuck+'</p>');
+                }else {
+
+                    $("#lineUp").append('<p>'+result.msg+'</p>');
                 }
             }).fail(function () {
 

@@ -308,4 +308,21 @@ public class DoctorController {
 
     }
 
+
+    /**
+     * 修改密码
+     */
+    @RequestMapping(value = "/updatPass")
+    @ResponseBody
+    public ResultInfo updatPass(UserVo userVo ,HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("user");
+        user = userService.getById(user.getUserId());
+        if (StrUtil.isNotBlank(userVo.getPassword())){
+            BeanUtil.copyProperties(userVo,user);
+            userService.updateById(user);
+        }
+        return ResultDataUtil.createSuccess(CommonEnum.SUCCESS).setData(user);
+
+
+    }
 }
