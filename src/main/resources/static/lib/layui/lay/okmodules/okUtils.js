@@ -50,7 +50,7 @@ layui.define(["layer"], function (exprots) {
       /**
        * 服务器地址
        */
-      baseUrl: BaseUrl,
+      baseUrl: "http://localhost:8085",
       /**
        * 获取body的总宽度
        */
