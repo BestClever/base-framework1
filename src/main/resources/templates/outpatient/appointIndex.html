@@ -3,7 +3,7 @@
 <head>
     <head>
         <meta charset="utf-8"/>
-        <title>预约信息</title>
+        <title>我的预约</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
         <link rel="stylesheet" href="../../css/oksub.css"/>
         <script type="text/javascript" src="../../lib/loading/okLoading.js"></script>
@@ -71,10 +71,9 @@
         });
 
         function appointCancel(data) {
-            debugger
             let url = "/appoint/aCancellation";
             let type = "post";
-            let params = {outpatientId: data.outpatientNumber};
+            let params = {appointId: data.appointId};
             okUtils.ajax(url, type, params, true).done(function (result) {
                 okUtils.tableSuccessMsg(result.msg);
             }).fail(function () {
@@ -109,7 +108,7 @@
 
 <!-- 行工具栏模板 -->
 <script type="text/html" id="operationTpl">
-    {{# if(d.appointStatus== 3){ }}
+    {{#  if(d.patientType == 1 || d.patientType == 2 || d.patientType == 3 || d.patientType == 6){ }}
     <a href="javascript:" class="layui-btn layui-btn-xs" title="取消预约" lay-event="appointCancel">取消预约</a>
     {{# } }}
 </script>

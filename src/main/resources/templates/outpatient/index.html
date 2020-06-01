@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
-    <title>用户列表</title>
+    <title>预约信息</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
     <link rel="stylesheet" href="../../css/oksub.css"/>
     <script type="text/javascript" src="../../lib/loading/okLoading.js"></script>
@@ -79,7 +79,6 @@
         });
 
         function appoint(data) {
-            debugger
             let url = "/appoint/add";
             let type = "post";
             let params={outpatientId:data.outpatientNumber};
