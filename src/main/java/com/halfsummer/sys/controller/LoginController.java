@@ -105,17 +105,17 @@ public class LoginController {
             menu.setSpread(true);
             menu.setCheck(true);
             Menu doctor = new Menu();
-            doctor.setTitle("医生信息");
+            doctor.setTitle("医生工作台");
             doctor.setHref("/doctor/doctor");
             doctor.setFontFamily("ok-icon");
             doctor.setIcon("&#xe66f;");
-            Menu work = new Menu();
-            work.setTitle("医生工作");
-            work.setHref("/doctor/work");
-            work.setFontFamily("ok-icon");
-            work.setIcon("&#xe705;");
+//            Menu work = new Menu();
+//            work.setTitle("医生工作");
+//            work.setHref("/doctor/work");
+//            work.setFontFamily("ok-icon");
+//            work.setIcon("&#xe705;");
+//            list.add(work);
             list.add(menu);
-            list.add(work);
             list.add(doctor);
         }else if(StrUtil.equals(user.getRoleCode(),"3")){
             Menu menu = new Menu();
@@ -131,12 +131,13 @@ public class LoginController {
             mzxx.setFontFamily("ok-icon");
             mzxx.setIcon("&#xe6b8;");
             Menu yyxx = new Menu();
-            yyxx.setTitle("预约信息");
-            yyxx.setHref("/appoint/index");
+            yyxx.setTitle("管理员工作台");
+            yyxx.setHref("/administrator/administrator");
             yyxx.setFontFamily("ok-icon");
             yyxx.setIcon("&#xe6b8;");
             list.add(menu);
-            list.add(mzxx);
+//            list.add(mzxx);
+            list.add(yyxx);
         }
 
         return list;

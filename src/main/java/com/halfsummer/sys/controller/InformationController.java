@@ -5,8 +5,10 @@ import com.halfsummer.baseframework.enums.CommonEnum;
 import com.halfsummer.baseframework.result.ResultDataUtil;
 import com.halfsummer.baseframework.result.ResultInfo;
 import com.halfsummer.sys.domain.Information;
+import com.halfsummer.sys.domain.User;
 import com.halfsummer.sys.service.InformationServer;
 import com.halfsummer.sys.vo.DoctorVo;
+import com.halfsummer.sys.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -58,7 +60,19 @@ public class InformationController {
 
 
     }
+    /**
+     * 修改公告
+     */
 
+    @RequestMapping(value = "/modifyBulletin")
+    @ResponseBody
+    public ResultInfo modifyBulletin(Information information) {
+        information.setId("1");
+        informationServer.updateById(information);
+        return ResultDataUtil.createSuccess(CommonEnum.SUCCESS);
+
+
+    }
 
 
 }

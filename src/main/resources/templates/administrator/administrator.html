@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>用户列表</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <link rel="stylesheet" href="../../css/oksub.css"/>
+    <script type="text/javascript" src="../../lib/loading/okLoading.js"></script>
+</head>
+<body>
+<div class="ok-body">
+    <!--数据表格-->
+    <table class="layui-hide" id="tableId" lay-filter="tableFilter"></table>
+</div>
+
+<div class="site-text" style="margin: 5%; display: none" id="window"  target="test123">
+    <form class="layui-form" id="book" method="post" lay-filter="example">
+        <div class="layui-form-item">
+            <label class="layui-form-label">医院简介</label>
+            <div class="layui-input-block">
+                <input type="text" id="bid" name="bid" lay-verify="title" autocomplete="off" placeholder="请输入医院简介" class="layui-input">
+            </div>
+
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">医院公告</label>
+            <div class="layui-input-block">
+                <input type="text" id="bname" name="bname" lay-verify="title" autocomplete="off" placeholder="请输入医院公告" class="layui-input">
+            </div>
+        </div>
+    </form>
+    <script type="text/html" id="toolbarDemo">
+        <div class="layui-btn-container">
+
+            <button class="layui-btn layui-btn-sm" lay-event="getCheckData">修改医院信息</button>
+
+        </div>
+    </script>
+</div>
+
+<!--js逻辑-->
+<script src="../lib/layui/layui.js"></script>
+<script th:inline="none">
+    layui.use(["element", "jquery", "table", "form", "laydate", "okLayer", "okUtils", "okMock"], function () {
+        let table = layui.table;
+        let form = layui.form;
+        let laydate = layui.laydate;
+        let okLayer = layui.okLayer;
+        let okUtils = layui.okUtils;
+        let okMock = layui.okMock;
+        let $ = layui.jquery;
+        // getClassify();
+
+        laydate.render({elem: "#outpatientDate", type: "datetime"});
+
+        okLoading.close($);//关闭 加载
+        let userTable = table.render({
+            elem: '#tableId',
+            url: okMock.api.userList,
+            limit: 20,
+            page: true,
+            toolbar: true,
+            toolbar: '#toolbarDemo',
+            size: "sm",
+            cols: [[
+                {field: "userId", title: "用户id", sort: true},
+                {field: "userName", title: "用户名称"},
+                {field: "password", title: "用户密码"},
+                {field: "userSex", title: "用户性别"},
+                {field: "birthDay", title: "用户生日", templet: "#roleTpl"},
+                {field: "phone", title: "用户手机", templet: "#statusTpl"},
+                {field: "roleName", title: "用户角色", templet: "#statusTpl"},
+                {title: "操作", align: "center", fixed: "right", templet: "#operationTpl"}
+            ]],
+            done: function (res, curr, count) {
+                console.info(res, curr, count);
+            }
+        });
+
+        form.on("submit(search)", function (data) {
+            userTable.reload({
+                where: data.field,
+                page: {curr: 1}
+            });
+            return false;
+        });
+
+
+
+
+        table.on("tool(tableFilter)", function (obj) {
+            let data = obj.data;
+            switch (obj.event) {
+                case "appoint":
+                    appoint(data);
+                    break;
+
+            }
+        });
+//头工具栏事件
+        table.on('toolbar(tableFilter)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch(obj.event){
+                case 'getCheckData':
+                    outpatientNumber();
+                    break;
+
+            };
+        });
+
+
+        function appoint(data) {
+
+            let url = "/doctor/induction";
+            alert(url);
+            let type = "post";
+            let params={appointId:data.appointId,appointStatus:"4"};
+            okUtils.ajax(url,type,params,true).done(function (result) {
+                okUtils.tableSuccessMsg(result.msg);
+            }).fail(function () {
+
+            });
+        }
+
+
+
+        function outpatientNumber() {
+            layer.open({
+                type: 1 //Page层类型
+                ,skin: 'layui-layer-molv'
+                ,area: ['380px', '270px']
+                ,title: ['填写修改门诊数','font-size:18px']
+                ,btn: ['确定', '取消']
+                ,shadeClose: true
+                ,shade: 0 //遮罩透明度
+                ,maxmin: true //允许全屏最小化
+                ,content:$("#window")
+                ,success:	function(){
+
+
+                } ,yes:function(){
+                    let url = "/information/modifyBulletin";
+                    let type = "post";
+                    let params={introduction: $('#bid').val(),announcement: $('#bname').val()};
+                    okUtils.ajax(url,type,params,true).done(function (result) {
+                        okUtils.tableSuccessMsg(result.msg);
+                        layer.closeAll();
+                    }).fail(function () {
+
+                    });
+                }
+            });
+
+        }
+
+
+
+
+    })
+</script>
+
+<!-- 行工具栏模板 -->
+<script type="text/html" id="operationTpl">
+
+    <a href="javascript:" class="layui-btn layui-btn-xs" title="入职" lay-event="appoint">入职</a>
+
+</script>
+
+</body>
+</html>

@@ -22,6 +22,7 @@ import com.halfsummer.sys.service.OutpatientServer;
 import com.halfsummer.sys.service.UserService;
 import com.halfsummer.sys.vo.DoctorVo;
 import com.halfsummer.sys.vo.OutpatientVo;
+import com.halfsummer.sys.vo.UserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -113,7 +114,7 @@ public class DoctorController {
 
     @RequestMapping(value = "/add")
     @ResponseBody
-    public ResultInfo saveAppoint(@RequestBody DoctorVo doctorVo) {
+    public ResultInfo saveAppoint( DoctorVo doctorVo) {
 
         QueryWrapper<DoctorVo> doctorVoQueryWrapper = new QueryWrapper<>();
         boolean key = false;
@@ -137,7 +138,7 @@ public class DoctorController {
 
     @RequestMapping(value = "/delet")
     @ResponseBody
-    public ResultInfo deletAppoint(@RequestBody DoctorVo doctorVo) {
+    public ResultInfo deletAppoint( DoctorVo doctorVo) {
 
         QueryWrapper<Doctor> doctorVoQueryWrapper = new QueryWrapper<>();
         boolean key = false;
@@ -163,7 +164,12 @@ public class DoctorController {
         User user = (User) request.getSession().getAttribute("user");
         QueryWrapper<OutpatientVo> wrapper = new QueryWrapper<>();
         wrapper.ne("appoint_status","1").isNotNull("appoint_id");
-
+        if (StrUtil.isNotBlank(doctorVo.getDepartmentName())){
+            wrapper.like("u.user_name",doctorVo.getDepartmentName());
+        }
+        if (StrUtil.isNotBlank(doctorVo.getOutpatientDate() )){
+            wrapper .eq("outpatient_date",doctorVo.getOutpatientDate());
+        }
         Page<OutpatientVo> page = new Page<OutpatientVo>(doctorVo.page,doctorVo.size);
         IPage<OutpatientVo> doctorVoIPage = doctorMapper.checkToAppointment(page, wrapper);
 
@@ -210,8 +216,9 @@ public class DoctorController {
        if (outpatient != null){
 
            doctorVo.setOutpatientNumber(outpatient.getOutpatientNumber());
+       }else {
+           doctorVo.setOutpatientNumber(ParameterEnum.UNPUBLISHED_WORK.getResultMsg());
        }
-        doctorVo.setOutpatientNumber(ParameterEnum.DEFAULT_NUMBER.getResultMsg());
         return ResultDataUtil.createSuccess(CommonEnum.SUCCESS).setData(doctorVo);
 
 
@@ -234,5 +241,38 @@ public class DoctorController {
 
     }
 
+    /**
+     * 用户列表(管理员用)
+     */
+
+    @RequestMapping(value = "/userList")
+    @ResponseBody
+    public DataGridResultInfo userList(DoctorVo doctorVo, HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("user");
+        QueryWrapper<UserVo> wrapper = new QueryWrapper<>();
+
+        Page<UserVo> page = new Page<UserVo>(doctorVo.page,doctorVo.size);
+        IPage<UserVo> doctorVoIPage = doctorMapper.userList(page);
+
+        PageInfo pageInfo = new PageInfo();
+        pageInfo.setList(doctorVoIPage.getRecords());
+        pageInfo.setTotal(doctorVoIPage.getTotal());
+        return  ResultDataUtil.createQueryResult(pageInfo);
+    }
+    /**
+     * 用户入职
+     */
+    @RequestMapping(value = "/induction")
+    @ResponseBody
+    public ResultInfo induction(UserVo userVo) {
+
+       User user = userService.getById(userVo.getUserId());
+       user.setRoleCode("2");
+       user.setRoleName("医生");
+        userService.updateById(user);
+        return ResultDataUtil.createSuccess(CommonEnum.SUCCESS);
+
+
+    }
 
 }

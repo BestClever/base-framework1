@@ -49,7 +49,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">门诊数</label>
             <div class="layui-input-block">
-                <input type="text" id="bids" name="bid" lay-verify="title" autocomplete="off" placeholder="请输入门诊数" class="layui-input">
+                <input type="text" id="oNum" name="bid" lay-verify="title" autocomplete="off" placeholder="请输入门诊数" class="layui-input">
             </div>
 
         </div>
@@ -61,7 +61,7 @@
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-radius layui-btn-disabled"  id="keyname"></button>
         <button class="layui-btn layui-btn-sm" lay-event="getCheckData">修改</button>
-        <button class="layui-btn layui-btn-sm" lay-event="getCheckData">发布工作</button>
+        <button class="layui-btn layui-btn-sm" lay-event="publishedWork">发布工作</button>
     </div>
 </script>
 <!--js逻辑-->
@@ -128,12 +128,30 @@
                 case "returnvisit":
                     returnvisit(data);
                     break;
+
+            }
+        });
+//头工具栏事件
+        table.on('toolbar(tableFilter)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch(obj.event){
                 case 'getCheckData':
                     outpatientNumber();
                     break;
-            }
-        });
+                case 'publishedWork':
+                    var data = checkStatus.data;
+                    publishedWork();
+                    break;
+                case 'isAll':
+                    layer.msg(checkStatus.isAll ? '全选': '未全选');
+                    break;
 
+                //自定义头工具栏右侧图标 - 提示
+                case 'LAYTABLE_TIPS':
+                    layer.alert('这是工具栏右侧自定义的一个图标按钮');
+                    break;
+            };
+        });
 
 
         function appoint(data) {
@@ -168,6 +186,17 @@
 
             });
         }
+        //
+        function publishedWork(data) {
+            let url ='/outpatient/publishedWork';
+            let type = "post";
+            let params={};
+            okUtils.ajax(url,type,params,true).done(function (result) {
+                okUtils.tableSuccessMsg(result.msg);
+            }).fail(function () {
+
+            });
+        }
 
         function outpatientNumber() {
             layer.open({
@@ -184,6 +213,15 @@
 
 
                 } ,yes:function(){
+                    let url = "/appoint/modifyNumber";
+                    let type = "post";
+                    let params={outpatientNumber: $('#oNum').val()};
+                    okUtils.ajax(url,type,params,true).done(function (result) {
+                        okUtils.tableSuccessMsg(result.msg);
+                        layer.closeAll();
+                    }).fail(function () {
+
+                    });
                 }
             });
 

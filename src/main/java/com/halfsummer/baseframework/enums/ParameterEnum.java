@@ -16,6 +16,7 @@ public enum ParameterEnum implements BaseInfoInterface {
 	RETURN_VISIT(200, "回诊"),
 	WAITING_TIME(200,"30"),
 	DEFAULT_NUMBER(200,"50"),
+    UNPUBLISHED_WORK(200,"今日尚未发布工作"),
 	DEFAULT_WORK(200,"常规检查")
 
 

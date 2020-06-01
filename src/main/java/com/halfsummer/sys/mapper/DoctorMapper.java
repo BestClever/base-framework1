@@ -1,14 +1,17 @@
 package com.halfsummer.sys.mapper;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.halfsummer.sys.domain.Doctor;
 import com.halfsummer.sys.domain.Outpatient;
 import com.halfsummer.sys.domain.User;
 import com.halfsummer.sys.vo.DoctorVo;
 import com.halfsummer.sys.vo.OutpatientVo;
+import com.halfsummer.sys.vo.UserVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -28,4 +31,6 @@ public interface DoctorMapper extends BaseMapper<Doctor> {
     IPage<OutpatientVo> checkToAppointment(IPage<OutpatientVo> page,  @Param(Constants.WRAPPER) Wrapper<OutpatientVo> queryWrapper);
 
     List<Outpatient> getDatelist(User user);
+
+    IPage<UserVo> userList(IPage<UserVo> page);
 }

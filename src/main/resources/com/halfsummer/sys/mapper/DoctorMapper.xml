@@ -76,4 +76,24 @@
             doctor_id =  #{userId,jdbcType=VARCHAR}
 
     </select>
+    <select id="userList" resultType="com.halfsummer.sys.vo.UserVo" >
+        SELECT
+                user_id,
+                user_name,
+            CASE
+                    user_sex
+                    WHEN '1' THEN
+                    '男'
+                    WHEN '2' THEN
+                    '女' ELSE '其他'
+
+                END userSex,
+                PASSWORD,
+                birth_day birthDay,
+                phone,
+                role_name
+            FROM
+                t_sys_user
+
+    </select>
 </mapper>

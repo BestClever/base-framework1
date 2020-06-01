@@ -39,7 +39,7 @@ public class OutpatientController {
 
     @RequestMapping(value = "/index")
     public String index(){
-        return "outpatient/doctor";
+        return "administrator/administrator";
     }
 //    @RequestMapping(value = "/doctor")
 //    public String doctor(){

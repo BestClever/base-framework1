@@ -5,8 +5,8 @@ layui.define([], function (exprots) {
             doctorList:"http://localhost:8085/doctor/doctorList",
             appointAdd:"http://localhost:8085/appoint/add",
             checkToAppoint:"http://localhost:8085/doctor/checkToAppoint",
-            cBook:"http://localhost:8085/doctor/cbook",
-            cancel:"http://localhost:8085/appoint/aCancellation"
+            userList:"http://localhost:8085/doctor/userList"
+
 
         }
     };
