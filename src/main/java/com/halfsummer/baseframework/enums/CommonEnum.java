@@ -24,7 +24,8 @@ public enum CommonEnum implements BaseInfoInterface {
 	DATA_DOESNT_EXIST(10086,"该用户无排队信息"),
 
 	not_exist_user(2000,"用户名或密码错误"),
-	MONEY(20,"付款成功!")
+	MONEY(20,"付款成功!"),
+    MAKE_APPOINTMENT(20,"已预约过了!")
 
 
 

@@ -140,7 +140,7 @@
                     break;
                 case 'publishedWork':
                     var data = checkStatus.data;
-                    publishedWork();
+
                     break;
                 case 'isAll':
                     layer.msg(checkStatus.isAll ? '全选': '未全选');
@@ -157,9 +157,8 @@
         function appoint(data) {
 
             let url = "/appoint/cbook";
-            alert(url);
             let type = "post";
-            let params={appointId:data.appointId,appointStatus:"4"};
+            let params={appointId:data.appointId,appointStatus:"3"};
             okUtils.ajax(url,type,params,true).done(function (result) {
                 okUtils.tableSuccessMsg(result.msg);
             }).fail(function () {
@@ -167,9 +166,9 @@
             });
         }
         function complete(data) {
-            let url = okMock.api.cBook;
+            let url = "/appoint/cbook";
             let type = "post";
-            let params={appointId:data.appointId,appointStatus:'5'};
+            let params={appointId:data.appointId,appointStatus:'4'};
             okUtils.ajax(url,type,params,true).done(function (result) {
                 okUtils.tableSuccessMsg(result.msg);
             }).fail(function () {
@@ -177,7 +176,7 @@
             });
         }
         function cancel(data) {
-            let url = okMock.api.cancel;
+            let url = '/appoint/aCancellation';
             let type = "post";
             let params={appointId:data.appointId};
             okUtils.ajax(url,type,params,true).done(function (result) {
@@ -188,9 +187,9 @@
         }
         //
         function publishedWork(data) {
-            let url ='/outpatient/publishedWork';
+            let url = okMock.api.cancel;
             let type = "post";
-            let params={};
+            let params={appointId:data.appointId};
             okUtils.ajax(url,type,params,true).done(function (result) {
                 okUtils.tableSuccessMsg(result.msg);
             }).fail(function () {
@@ -276,6 +275,7 @@
 
 <!-- 行工具栏模板 -->
 <script type="text/html" id="operationTpl">
+    {{# if(d.appointStatus!='4'){ }}
     {{# if(d.appointStatus!='5'){ }}
     {{# if(d.appointStatus=='2'){ }}
     <a href="javascript:" class="layui-btn layui-btn-xs" title="预约" lay-event="appoint">开始诊断</a>
@@ -286,6 +286,9 @@
     <a href="javascript:" class="layui-btn layui-btn-xs" title="预约" lay-event="returnvisit">回诊</a>
     {{# } else { }}
     <span class="layui-btn layui-btn-warm layui-btn-xs">该预约已取消</span>
+    {{# } }}
+    {{# } else { }}
+    <span class="layui-btn layui-btn-warm layui-btn-xs">该预约已完成</span>
     {{# } }}
 </script>
 

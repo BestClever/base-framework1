@@ -87,7 +87,7 @@ public class DoctorController {
         BeanUtil.copyProperties(userVo,user);
         user.setUserId(IdUtil.simpleUUID());
         user.setRoleCode("1");
-        user.setRoleName("病人");
+        user.setRoleName("患者");
         user.setUserSex("1");
         user.setBirthDay(DateUtil.formatLocalDateTime(LocalDateTime.now()));
         userService.save(user);
