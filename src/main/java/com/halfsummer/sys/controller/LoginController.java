@@ -97,13 +97,13 @@ public class LoginController {
             menu.setSpread(true);
             menu.setCheck(true);
             Menu yyxx = new Menu();
-            yyxx.setTitle("预约信息");
+            yyxx.setTitle("门诊信息");
             yyxx.setHref("/outpatient/index");
             yyxx.setFontFamily("ok-icon");
             yyxx.setIcon("&#xe6b8;");
             Menu mzxx = new Menu();
-            mzxx.setTitle("门诊信息");
-            mzxx.setHref("/outpatient/index");
+            mzxx.setTitle("我的预约");
+            mzxx.setHref("/appoint/index");
             mzxx.setFontFamily("ok-icon");
             mzxx.setIcon("&#xe6b8;");
             Menu dzbl = new Menu();
@@ -117,7 +117,7 @@ public class LoginController {
             grxx.setFontFamily("ok-icon");
             grxx.setIcon("&#xe6b8;");
             list.add(menu);
-//            list.add(yyxx);
+            list.add(yyxx);
             list.add(mzxx);
             list.add(dzbl);
             list.add(grxx);
