@@ -75,12 +75,7 @@
                 case "appoint":
                     appoint(data);
                     break;
-                case "money":
-                    money(data);
-                    break;
-                case "cancel":
-                    cancel(data);
-                    break;
+
             }
         });
 
@@ -94,40 +89,13 @@
 
             });
         }
-        function money(data) {
-            let url = "/appoint/payment";
-            let type = "post";
-            let params={outpatientId:data.outpatientNumber};
-            okUtils.ajax(url,type,params,true).done(function (result) {
-                okUtils.tableSuccessMsg(result.msg);
-            }).fail(function () {
-
-            });
-        }
-        function cancel(data) {
-            let url = '/appoint/aCancellation';
-            let type = "post";
-            let params={outpatientId:data.outpatientNumber,appointDate:data.outpatientDate};
-            okUtils.ajax(url,type,params,true).done(function (result) {
-                okUtils.tableSuccessMsg(result.msg);
-            }).fail(function () {
-
-            });
-        }
     })
 </script>
 
 <!-- 行工具栏模板 -->
 <script type="text/html" id="operationTpl">
-    {{# if(d.appointStatus=='2'){ }}
-    <a href="javascript:" class="layui-btn layui-btn-danger layui-btn-xs" title="预约" lay-event="cancel">取消预约</a>
-    {{# } else { }}
-    {{# if(d.appointStatus=='1'){ }}
-    <span class="layui-btn layui-btn-warm layui-btn-xs" lay-event="money">付款</span>
-    {{# } else { }}
+
     <a href="javascript:" class="layui-btn layui-btn-xs" title="预约" lay-event="appoint">预约</a>
-    {{# } }}
-    {{# } }}
 
 </script>
 

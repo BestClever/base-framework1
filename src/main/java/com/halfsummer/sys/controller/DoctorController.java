@@ -21,6 +21,7 @@ import com.halfsummer.sys.service.AutoincremenServer;
 import com.halfsummer.sys.service.DoctorService;
 import com.halfsummer.sys.service.OutpatientServer;
 import com.halfsummer.sys.service.UserService;
+import com.halfsummer.sys.vo.AppointVo;
 import com.halfsummer.sys.vo.DoctorVo;
 import com.halfsummer.sys.vo.OutpatientVo;
 import com.halfsummer.sys.vo.UserVo;
@@ -59,7 +60,7 @@ public class DoctorController {
 
     @RequestMapping(value = "/work")
     public String work(){
-        return "/doctor/work";
+        return "/doctor/results";
     }
 
     @RequestMapping(value = "/list")
@@ -132,20 +133,31 @@ public class DoctorController {
 
 
 
-    @RequestMapping(value = "/add")
+    @RequestMapping(value = "/upUser")
     @ResponseBody
-    public ResultInfo saveAppoint( DoctorVo doctorVo) {
-
-        QueryWrapper<DoctorVo> doctorVoQueryWrapper = new QueryWrapper<>();
+    public ResultInfo saveAppoint( UserVo userVo,HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("user");
+        QueryWrapper<UserVo> wrapper = new QueryWrapper<>();
         boolean key = false;
-        Doctor doctor  = new Doctor();
-        BeanUtil.copyProperties(doctorVo,doctor);
-        if (doctorVo.getDepartmentId() != null) {
-            key = doctorService.updateById(doctor);
-        } else {
 
-            key = doctorService.save(doctor);
+       if (StrUtil.isNotBlank(userVo.getPhone())){
+           user.setPhone(userVo.getPhone());
+       }
+        if (StrUtil.isNotBlank(userVo.getUserSex())){
+            user.setUserSex(userVo.getUserSex());
         }
+        if (StrUtil.isNotBlank(userVo.getBirthDay())){
+            user.setBirthDay(userVo.getBirthDay());
+        }
+        if (StrUtil.isNotBlank(userVo.getUserName())){
+            user.setUserName(userVo.getUserName());
+        }
+            if (userVo!=null){
+
+                key = userService.updateById(user);
+            }
+
+
         if (key) {
             return ResultDataUtil.createSuccess(CommonEnum.SUCCESS);
         } else {
@@ -183,13 +195,14 @@ public class DoctorController {
     public DataGridResultInfo checkToAppointment(DoctorVo doctorVo, HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute("user");
         QueryWrapper<OutpatientVo> wrapper = new QueryWrapper<>();
-        wrapper.ne("appoint_status","1").isNotNull("appoint_id");
+        wrapper.in("appoint_status","2","3","6").isNotNull("appoint_id");
         if (StrUtil.isNotBlank(doctorVo.getDepartmentName())){
             wrapper.like("u.user_name",doctorVo.getDepartmentName());
         }
         if (StrUtil.isNotBlank(doctorVo.getOutpatientDate() )){
             wrapper .eq("outpatient_date",doctorVo.getOutpatientDate());
         }
+
         Page<OutpatientVo> page = new Page<OutpatientVo>(doctorVo.page,doctorVo.size);
         IPage<OutpatientVo> doctorVoIPage = doctorMapper.checkToAppointment(page, wrapper);
 
@@ -252,13 +265,34 @@ public class DoctorController {
         User user = (User) request.getSession().getAttribute("user");
         user = userService.getById(user.getUserId());
         QueryWrapper<Outpatient> wrapper = new QueryWrapper<>();
-        Outpatient outpatient = outpatientServer.getOne(wrapper.eq("doctor_id",user.getUserId()).eq("outpatient_date", DateUtil.today()));
+        Outpatient outpatient = outpatientServer.getOne(wrapper.eq("doctor_id",user.getUserId()).in("outpatient_date", DateUtil.today()));
         outpatient.setOutpatientNumber(doctorVo.getOutpatientNumber());
         outpatientServer.updateById(outpatient);
 
         return ResultDataUtil.createSuccess(CommonEnum.SUCCESS);
 
 
+    }
+
+    /**
+     * 医生成果
+     * @param request
+     * @param appointVo
+     * @return
+     */
+    @RequestMapping(value = "/docResults")
+    @ResponseBody
+    public DataGridResultInfo docResults(HttpServletRequest request, AppointVo appointVo) {
+        User user = (User) request.getSession().getAttribute("user");
+        QueryWrapper<AppointVo> wrapper = new QueryWrapper<>();
+        wrapper.eq("doctor_id",user.getUserId()).in("appoint_status",'4','5','6' );
+        Page<AppointVo> page = new Page<AppointVo>(appointVo.page,appointVo.size);
+        IPage<AppointVo> appointPage = doctorMapper.docResults(page, wrapper);
+        PageInfo pageInfo = new PageInfo();
+        pageInfo.setList(appointPage.getRecords());
+        pageInfo.setTotal(appointPage.getTotal());
+
+        return  ResultDataUtil.createQueryResult(pageInfo);
     }
 
     /**

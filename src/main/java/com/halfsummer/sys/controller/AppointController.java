@@ -53,17 +53,24 @@ public class AppointController {
         return "/outpatient/appointIndex";
     }
 
+
     @RequestMapping(value = "/list")
     @ResponseBody
-    public DataGridResultInfo getAppointList() {
+    public DataGridResultInfo getAppointList(HttpServletRequest request,AppointVo appointVo) {
+        User user = (User) request.getSession().getAttribute("user");
         QueryWrapper<Appoint> wrapper = new QueryWrapper<>();
-        Page<Appoint> appointPage = appointMapper.selectPage(new Page<Appoint>(1, 2), wrapper);
+        wrapper.eq("user_id",user.getUserId()).ge("appoint_date",DateUtil.today());
+        Page<Appoint> page = new Page<Appoint>(appointVo.page,appointVo.size);
+        Page<Appoint> appointPage = appointMapper.selectPage(page, wrapper);
         PageInfo pageInfo = new PageInfo();
         pageInfo.setList(appointPage.getRecords());
         pageInfo.setTotal(appointPage.getTotal());
 
         return  ResultDataUtil.createQueryResult(pageInfo);
     }
+
+
+
 
     @RequestMapping(value = "/find/{appointId}")
     @ResponseBody
@@ -81,8 +88,9 @@ public class AppointController {
         Appoint appoint = new Appoint();
         //预约前检查是否已预约
         //根据outpatientId 和登陆人id来进行判断
-        appoint = appointServer.getOne(wrapper.eq("user_id",user.getUserId()).eq("outpatient_id",appointVo.getOutpatientId()));
-if (appoint== null) {
+        List<Appoint> appointList = appointServer.list(wrapper.eq("user_id",user.getUserId()).eq("outpatient_id",appointVo.getOutpatientId()).in("appoint_status","1","2"));
+if (appointList.size()==0) {
+    appoint = new Appoint();
     BeanUtil.copyProperties(appointVo, appoint);
     Outpatient outpatient = outpatientServer.getById(appoint.getOutpatientId());
     appoint.setAppointDate(outpatient.getOutpatientDate());
@@ -135,29 +143,27 @@ if (appoint== null) {
     public ResultInfo payment(AppointVo appointVo, HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute("user");
         int num ;
+        Appoint appoint = appointServer.getById(appointVo.getAppointId());
+        QueryWrapper<Appoint> queryWrapper = new QueryWrapper<>();
+        List<Appoint> list = appointServer.list(queryWrapper.eq("outpatient_id",appoint.getOutpatientId()).eq("appoint_status","2"));
         appointVo.setAppointStatus("2");
         appointVo.setUserId(user.getUserId());
         appointVo.setUsername(user.getUserName());
-        Appoint appoint = new Appoint();
         BeanUtil.copyProperties(appointVo,appoint);
-        QueryWrapper<Appoint> queryWrapper = new QueryWrapper<>();
-        //根据门诊号查询对应的流程号
-        Appoint as = appointServer.getOne(queryWrapper.eq("outpatient_id",appoint.getOutpatientId()).eq("user_id",user.getUserId()));
-        List<Appoint> list = appointServer.list(queryWrapper.eq("outpatient_id",appoint.getOutpatientId()).eq("appoint_status","2"));
+
         if (list == null){
             num = 1;
         }else {
             num = list.size()+1;
         }
         appoint.setLocation(String.valueOf(num));
-        appoint.setAppointId(as.getAppointId());
         boolean key = appointServer.updateById(appoint);
         if (key) {
 //            预约成功后增加当前预约人数
             appoint = appointServer.getById(appoint.appointId);
             Outpatient outpatient = outpatientServer.getById(appoint.getOutpatientId());
-            if (StrUtil.isNotBlank(outpatient.getCurrentNum())){
-                outpatient.setOutpatientNumber("0");
+            if (StrUtil.isBlank(outpatient.getCurrentNum())){
+                outpatient.setCurrentNum("0");
             }
             outpatient.setCurrentNum(String.valueOf(Integer.valueOf(outpatient.getCurrentNum())+1));
             outpatientServer.updateById(outpatient);
@@ -178,6 +184,7 @@ if (appoint== null) {
         if (StrUtil.isBlank(appointVo.getAppointId())){
             appoint = appointServer.getOne(queryWrapper.eq("outpatient_id",appointVo.getOutpatientId()).eq("appoint_date",appointVo.appointDate));
         }
+        BeanUtil.copyProperties(appointVo,appoint);
         appoint.setAppointStatus("5");
         appoint.setCancelId(user.getUserId());
         appoint.setCancelName(user.getUserName());
@@ -186,13 +193,14 @@ if (appoint== null) {
 //        List<Appoint> list = appointServer.list(queryWrapper.eq("outpatient_id",appoint.getOutpatientId()).eq("appoint_status","2"));
         boolean key = appointServer.updateById(appoint);
         if (key) {
-//            预约成功后增加当前预约人数
+//            取消预约成功后减少当前预约人数
             appoint = appointServer.getById(appoint.appointId);
             Outpatient outpatient = outpatientServer.getById(appoint.getOutpatientId());
             if (StrUtil.isNotBlank(outpatient.getCurrentNum()) && Integer.valueOf(outpatient.getCurrentNum())>0){
                 outpatient.setCurrentNum(String.valueOf(Integer.valueOf(outpatient.getCurrentNum())-1));
+            }else {
+                outpatient.setCurrentNum("0");
             }
-            outpatient.setCurrentNum("0");
             outpatientServer.updateById(outpatient);
             return ResultDataUtil.createSuccess(CommonEnum.SUCCESS);
         } else {
@@ -249,7 +257,7 @@ if (appoint== null) {
                     .lt("location",appoint.getLocation())
                     .orderByAsc("location")
             );
-            if (list == null){
+            if (list.size()==0){
                 //是为队伍第一位
                 locationVo.setSwiTch("1");
             }else {
@@ -267,8 +275,8 @@ if (appoint== null) {
                 locationVo.setAppointDate(appoint.getAppointDate());
                 locationVo.setWaitingTime(swTiem);
             }
-
             return ResultDataUtil.createSuccess(CommonEnum.SUCCESS).setData(locationVo);
+
         }
         return ResultDataUtil.createSuccess(CommonEnum.DATA_DOESNT_EXIST);
     }
@@ -302,6 +310,7 @@ if (appoint== null) {
 
        appoint.setAppointStatus("4");
        appoint.setMedicalAdvice(appointVo.getMedicalAdvice());
+       appoint.setAppointId(appointVo.getAppointId());
        appointServer.updateById(appoint);
        appoint = appointServer.getById(appointVo.getAppointId());
        //根据医生 id 与日期查出对应的门诊单号
@@ -336,7 +345,7 @@ if (appoint== null) {
     public ResultInfo getMedicalAdvice(  HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute("user");
         QueryWrapper<Appoint> queryWrappers = new QueryWrapper<>();
-        queryWrappers.eq("user_id",user.getUserId()).eq("appoint_date", DateUtil.today());
+        queryWrappers.eq("user_id",user.getUserId()).eq("appoint_date", DateUtil.today()).eq("appoint_status","6");
         Appoint appoint = appointServer.getOne(queryWrappers);
         if (appoint == null){
             appoint = new Appoint();

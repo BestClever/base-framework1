@@ -106,8 +106,14 @@
             let params = {};
             okUtils.ajax(url, type, params, true).done(function (result) {
                 // okUtils.tableSuccessMsg(result.msg);
+                let fuck
                 if (result.code != '10086') {
-                        let fuck = "前方人数: "+result.data.peopleNum+" 还需等待:  "+result.data.peopleNum+" 您的就诊医生为:  "+result.data.doctorName;
+                    if (result.data.swiTch == '1'){
+                        fuck = "已经到您的预约了,请前往相应科室就诊.";
+                    } else {
+
+                       fuck = "前方人数: "+result.data.peopleNum+" 还需等待:  "+result.data.WaitingTime+" 您的就诊医生为:  "+result.data.doctorName;
+                    }
 
                     $("#lineUp").append('<p>'+fuck+'</p>');
                 }else {

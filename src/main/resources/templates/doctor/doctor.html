@@ -27,13 +27,9 @@
         <div class="layui-form-item">
             <label class="layui-form-label">回诊日期</label>
             <div class="layui-input-block">
-                <input type="text" id="bid" name="bid" lay-verify="title" autocomplete="off" placeholder="请输入日期" class="layui-input">
+                <input type="text" name="date" id="date" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
             </div>
-            <!--<div class="x-body layui-form">-->
-                <!--<select name="classifyId" id="classifyId">-->
-                    <!--<option value="">请选择</option>-->
-                <!--</select>-->
-            <!--</div>-->
+
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">医嘱</label>
@@ -77,7 +73,12 @@
         let $ = layui.jquery;
         getClassify();
 
-        laydate.render({elem: "#outpatientDate", type: "datetime"});
+        //前后若干天可选，这里以7天为例
+        laydate.render({
+            elem: '#date'
+            ,min: 0
+            ,max: 7
+        });
 
         okLoading.close($);//关闭 加载
         let userTable = table.render({
@@ -245,7 +246,7 @@
             ,yes:function(){
                 let url = "/appoint/returnVisit";
                 let type = "post";
-                let params={appointId:data.appointId,medicalAdvice: $('#bname').val(),appointDate: $('#bid').val()};
+                let params={appointId:data.appointId,medicalAdvice: $('#bname').val(),appointDate: $('#date').val()};
                 okUtils.ajax(url,type,params,true).done(function (result) {
                     okUtils.tableSuccessMsg(result.msg);
                     layer.closeAll();
@@ -275,20 +276,19 @@
 
 <!-- 行工具栏模板 -->
 <script type="text/html" id="operationTpl">
-    {{# if(d.appointStatus!='4'){ }}
-    {{# if(d.appointStatus!='5'){ }}
-    {{# if(d.appointStatus=='2'){ }}
+    {{#  if(d.appointStatus == 2){ }}
     <a href="javascript:" class="layui-btn layui-btn-xs" title="预约" lay-event="appoint">开始诊断</a>
     <a href="javascript:" class="layui-btn layui-btn-xs" title="预约" lay-event="cancel">取消预约</a>
-    {{# } else { }}
+    {{#  } else if(d.appointStatus == 3) { }}
     <a href="javascript:" class="layui-btn layui-btn-xs" title="预约" lay-event="complete">诊断完成</a>
-    {{# } }}
     <a href="javascript:" class="layui-btn layui-btn-xs" title="预约" lay-event="returnvisit">回诊</a>
-    {{# } else { }}
-    <span class="layui-btn layui-btn-warm layui-btn-xs">该预约已取消</span>
-    {{# } }}
-    {{# } else { }}
+    {{#  } else if(d.appointStatus == 4) {  }}
     <span class="layui-btn layui-btn-warm layui-btn-xs">该预约已完成</span>
+    {{#  } else if(d.appointStatus == 5) { }}
+    <span class="layui-btn layui-btn-normal layui-btn-xs">该预约已取消</span>
+    {{#  } else if(d.appointStatus == 6) { }}
+    <a href="javascript:" class="layui-btn layui-btn-xs" title="预约" lay-event="appoint">开始诊断</a>
+    <a href="javascript:" class="layui-btn layui-btn-xs" title="预约" lay-event="cancel">取消预约</a>
     {{# } }}
 </script>
 

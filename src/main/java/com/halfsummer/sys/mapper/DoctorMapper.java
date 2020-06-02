@@ -1,14 +1,13 @@
 package com.halfsummer.sys.mapper;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.halfsummer.sys.domain.Doctor;
 import com.halfsummer.sys.domain.Outpatient;
 import com.halfsummer.sys.domain.User;
+import com.halfsummer.sys.vo.AppointVo;
 import com.halfsummer.sys.vo.DoctorVo;
 import com.halfsummer.sys.vo.OutpatientVo;
 import com.halfsummer.sys.vo.UserVo;
@@ -33,4 +32,6 @@ public interface DoctorMapper extends BaseMapper<Doctor> {
     List<Outpatient> getDatelist(User user);
 
     IPage<UserVo> userList(IPage<UserVo> page);
+
+    IPage<AppointVo> docResults(IPage<AppointVo> page, @Param(Constants.WRAPPER)Wrapper<AppointVo> wrapper);
 }

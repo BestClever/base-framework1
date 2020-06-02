@@ -18,4 +18,9 @@ public class AppointVo {
     public  String nsname;
     public String patientType;//1:门诊患者2:回诊患者
     private String location;
+    public String outpatientNotice;
+
+    public Long page = 1L ;
+    public Long size = 10L;
+
 }

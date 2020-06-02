@@ -73,7 +73,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">请输入新密码</label>
                     <div class="layui-input-block">
-                        <input type="text" id="bid" name="bid" lay-verify="title" autocomplete="off"
+                        <input type="text" id="psw" name="bid" lay-verify="title" autocomplete="off"
                                placeholder="请输入新密码" class="layui-input">
                     </div>
 
@@ -82,36 +82,38 @@
             </form>
 
         </div>
-        <div class="site-text" style="margin: 5%; display: none" id="window" target="test123">
-            <form class="layui-form" id="book" method="post" lay-filter="example">
+        <div class="site-text" style="margin: 5%; display: none" id="windows" target="test123">
+            <form class="layui-form" id="books" method="post" lay-filter="example">
                 <div class="layui-form-item">
-                    <label class="layui-form-label">请输入新姓名/label>
+                    <label class="layui-form-label">请输入姓名</label>
                     <div class="layui-input-block">
-                        <input type="text" id="bid" name="bid" lay-verify="title" autocomplete="off"
-                               placeholder="请输入新密码" class="layui-input">
+                        <input type="text" id="userName" name="bid" lay-verify="title" autocomplete="off"
+                               placeholder="请输入姓名" class="layui-input">
                     </div>
 
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">请输入新生日</label>
+                    <label class="layui-form-label">请输入生日</label>
                     <div class="layui-input-block">
-                        <input type="text" id="bid" name="bid" lay-verify="title" autocomplete="off"
-                               placeholder="请输入新密码" class="layui-input">
+                        <input type="text" name="date" id="date" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
                     </div>
 
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">请输入新性别</label>
+
+                    <label class="layui-form-label">选择性别</label>
                     <div class="layui-input-block">
-                        <input type="text" id="bid" name="bid" lay-verify="title" autocomplete="off"
-                               placeholder="请输入新密码" class="layui-input">
+                        <input type="radio" name="sex" value="1" title="男" checked="">
+                        <input type="radio" name="sex" value="2" title="女">
                     </div>
+
+
 
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">请输入新手机</label>
+                    <label class="layui-form-label">请输入手机</label>
                     <div class="layui-input-block">
-                        <input type="text" id="bid" name="bid" lay-verify="title" autocomplete="off"
+                        <input type="text" id="phone" name="bid" lay-verify="title" autocomplete="off"
                                placeholder="请输入新密码" class="layui-input">
                     </div>
 
@@ -135,8 +137,14 @@
         let okMock = layui.okMock;
         let $ = layui.jquery;
         getuser();
+        laydate.render({
+            elem: '#birthDay'
+            ,type: 'datetime'
+        });
 
-        laydate.render({elem: "#outpatientDate", type: "datetime"});
+        laydate.render({
+            elem: '#date'
+        });
 
         okLoading.close($);//关闭 加载
 
@@ -185,8 +193,40 @@
                 });
             }
         );
+        $("#changegrxx").click(function () {
+            layer.open({
+                type: 1 //Page层类型
+                , skin: 'layui-layer-molv'
+                , area: ['480px', '470px']
+                , title: ['修改个人信息', 'font-size:18px']
+                , btn: ['确定', '取消']
+                , shadeClose: true
+                , shade: 0 //遮罩透明度
+                , maxmin: true //允许全屏最小化
+                , content: $("#windows")
+                , success: function () {
 
-        changegrxx
+
+                }, yes: function () {
+                    debugger
+                    let url = "/doctor/upUser";
+                    let type = "post";
+                    let  password = $('#psw').val();
+                    let  userName = $('#userName').val();
+                    let  birthDay = $('#date').val();
+                    let  userSex = $("input[type='radio']:checked").val();
+                    let  phone = $('#phone').val();
+                    let params = {password: password,userName:userName,birthDay:birthDay,userSex:userSex,phone:phone};
+                    console.log("params",params);
+                    okUtils.ajax(url, type, params, true).done(function (result) {
+                        layer.closeAll();
+                    }).fail(function () {
+
+                    });
+                }
+            });
+        });
+
     })
 
 </script>

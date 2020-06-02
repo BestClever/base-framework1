@@ -134,14 +134,14 @@ public class LoginController {
             doctor.setHref("/doctor/doctor");
             doctor.setFontFamily("ok-icon");
             doctor.setIcon("&#xe66f;");
-//            Menu work = new Menu();
-//            work.setTitle("医生工作");
-//            work.setHref("/doctor/work");
-//            work.setFontFamily("ok-icon");
-//            work.setIcon("&#xe705;");
-//            list.add(work);
+            Menu work = new Menu();
+            work.setTitle("医生工作");
+            work.setHref("/doctor/work");
+            work.setFontFamily("ok-icon");
+            work.setIcon("&#xe705;");
             list.add(menu);
             list.add(doctor);
+            list.add(work);
         }else if(StrUtil.equals(user.getRoleCode(),"3")){
             Menu menu = new Menu();
             menu.setTitle("首页");

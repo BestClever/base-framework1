@@ -9,62 +9,7 @@
 </head>
 <body style="text-align:center">
 <div class="ok-body">
-    <!--<form class="layui-form">-->
-        <!--<div class="layui-form-item">-->
-            <!--<div class="layui-inline">-->
-                <!--<label class="layui-form-label">用户id</label>-->
-                <!--<div class="layui-input-inline">-->
-                    <!--<input type="tel" id="userId" name="phone" lay-verify="required" autocomplete="off"-->
-                           <!--class="layui-input" disabled="disabled">-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="layui-inline">-->
-                <!--<label class="layui-form-label">用户姓名</label>-->
-                <!--<div class="layui-input-inline">-->
-                    <!--<input type="text" id="userName" name="email" lay-verify="required" autocomplete="off"-->
-                           <!--class="layui-input" disabled="disabled">-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="layui-inline">-->
-                <!--<label class="layui-form-label">用户性别</label>-->
-                <!--<div class="layui-input-inline">-->
-                    <!--<input type="tel" id="userSex" name="url" lay-verify="required" autocomplete="off"-->
-                           <!--class="layui-input" disabled="disabled">-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
 
-        <!--<div class="layui-form-item">-->
-            <!--<div class="layui-inline">-->
-                <!--<label class="layui-form-label">用户生日</label>-->
-                <!--<div class="layui-input-inline">-->
-                    <!--<input type="text" id="birthDay" lay-verify="required" autocomplete="off" class="layui-input"-->
-                           <!--disabled="disabled">-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="layui-inline">-->
-                <!--<label class="layui-form-label">手机号码</label>-->
-                <!--<div class="layui-input-inline">-->
-                    <!--<input type="text" name="date" id="phone" lay-verify="required" autocomplete="off"-->
-                           <!--class="layui-input" disabled="disabled">-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="layui-inline">-->
-                <!--<label class="layui-form-label">用户类型</label>-->
-                <!--<div class="layui-input-inline">-->
-                    <!--<input type="tel" id="roleName" name="url" lay-verify="required" autocomplete="off"-->
-                           <!--class="layui-input" disabled="disabled">-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<div class="layui-form-item layui-form-text" style="width: 67%; text-align:center">-->
-            <!--<label class="layui-form-label">医嘱</label>-->
-            <!--<div class="layui-input-block">-->
-                <!--<textarea id="medicalAdvice" placeholder="请输入内容" class="layui-textarea" disabled="disabled"></textarea>-->
-            <!--</div>-->
-        <!--</div>-->
-
-    <!--</form>-->
     <form class="layui-form">
         <div class="layui-form-item">
             <label class="layui-form-label">用户id</label>
@@ -123,6 +68,7 @@
         let okMock = layui.okMock;
         let $ = layui.jquery;
         getuser();
+        medicalAdvice();
         okLoading.close($);//关闭 加载
 
 
@@ -134,10 +80,24 @@
             okUtils.ajax(url, type, params, true).done(function (result) {
                 $('#userId').val(result.data.userId);
                 $('#userName').val(result.data.userName);
-                $('#userSex').val('男');
+                $('#userSex').val(result.data.userSex);
                 $('#birthDay').val(result.data.birthDay);
                 $('#phone').val(result.data.phone);
                 $('#roleName').val(result.data.roleName);
+            }).fail(function () {
+
+            });
+
+
+        }
+        function medicalAdvice() {
+            let url = "/appoint/getMedicalAdvice";
+            let type = "post";
+            let params={};
+            okUtils.ajax(url,type,params,true).done(function (result) {
+                okUtils.tableSuccessMsg(result.msg);
+                $('#medicalAdvice').val(result.data.medicalAdvice);
+
             }).fail(function () {
 
             });

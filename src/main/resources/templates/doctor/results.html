@@ -3,7 +3,7 @@
 <head>
     <head>
         <meta charset="utf-8"/>
-        <title>我的预约</title>
+        <title>工作成果</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
         <link rel="stylesheet" href="../../css/oksub.css"/>
         <script type="text/javascript" src="../../lib/loading/okLoading.js"></script>
@@ -31,20 +31,20 @@
         okLoading.close($);//关闭 加载
         let userTable = table.render({
             elem: '#tableId',
-            url: okMock.api.appointList,
+            url: '/doctor/docResults',
             limit: 20,
             page: true,
             toolbar: true,
             toolbar: "#toolbarTpl",
             size: "sm",
             cols: [[
-                {field: "userName", title: "预约人名称", sort: true},
+                {field: "appointId", title: "预约ID", sort: true},
+                {field: "username", title: "患者姓名"},
                 {field: "appointDate", title: "预约日期"},
-                {field: "appointStageName", title: "预约时间段"},
-                {field: "cancelName", title: "取消人"},
-                {field: "patientType", title: "预约类型", templet: "#appintTypeTpl"},
+                {field: "medicalAdvice", title: "医嘱"},
+                 {field: "patientType", title: "预约类型", templet: "#appintTypeTpl"},
                 {field: "appointStatus", title: "预约状态", templet: "#statusTpl"},
-                {title: "操作", align: "center", fixed: "right", templet: "#operationTpl"}
+                {field: "outpatientNotice", title: "业务内容"}
             ]],
             done: function (res, curr, count) {
                 console.info(res, curr, count);

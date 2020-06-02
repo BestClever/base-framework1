@@ -94,4 +94,18 @@
                 t_sys_user
 
     </select>
+    <select id="docResults" resultType="com.halfsummer.sys.vo.AppointVo" >
+        SELECT
+            a.appoint_id,
+            a.user_name,
+            a.appoint_date,
+            a.medical_advice,
+            a.patient_type,
+            appoint_status,
+            o.outpatient_notice
+        FROM
+            t_sys_appoint a
+        LEFT JOIN t_sys_outpatient o ON o.outpatient_id = a.outpatient_id
+          ${ew.customSqlSegment}
+    </select>
 </mapper>
