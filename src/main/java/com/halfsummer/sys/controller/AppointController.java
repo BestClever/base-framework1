@@ -124,7 +124,7 @@ public class AppointController {
 
     @RequestMapping(value = "/payment")
     @ResponseBody
-    public ResultInfo payment(@RequestBody AppointVo appointVo, HttpServletRequest request) {
+    public ResultInfo payment(AppointVo appointVo, HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute("user");
         int num ;
         appointVo.setAppointStatus("2");
@@ -133,6 +133,8 @@ public class AppointController {
         Appoint appoint = new Appoint();
         BeanUtil.copyProperties(appointVo,appoint);
         QueryWrapper<Appoint> queryWrapper = new QueryWrapper<>();
+        //根据门诊号查询对应的流程号
+        Appoint as = appointServer.getOne(queryWrapper.eq("outpatient_id",appoint.getOutpatientId()).eq("user_id",user.getUserId()));
         List<Appoint> list = appointServer.list(queryWrapper.eq("outpatient_id",appoint.getOutpatientId()).eq("appoint_status","2"));
         if (list == null){
             num = 1;
@@ -140,6 +142,7 @@ public class AppointController {
             num = list.size()+1;
         }
         appoint.setLocation(String.valueOf(num));
+        appoint.setAppointId(as.getAppointId());
         boolean key = appointServer.updateById(appoint);
         if (key) {
 //            预约成功后增加当前预约人数
@@ -147,7 +150,7 @@ public class AppointController {
             Outpatient outpatient = outpatientServer.getById(appoint.getOutpatientId());
             outpatient.setCurrentNum(String.valueOf(Integer.valueOf(outpatient.getCurrentNum())+1));
             outpatientServer.updateById(outpatient);
-            return ResultDataUtil.createSuccess(CommonEnum.SUCCESS);
+            return ResultDataUtil.createSuccess(CommonEnum.MONEY);
         } else {
             return ResultDataUtil.createSuccess(CommonEnum.SAVE_FAILED);
         }

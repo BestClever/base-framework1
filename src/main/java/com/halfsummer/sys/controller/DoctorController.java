@@ -113,9 +113,9 @@ public class DoctorController {
             wrapper.like("u.user_name",doctorVo.getDepartmentName());
         }
         if (StrUtil.isNotBlank(doctorVo.getOutpatientDate() )){
-            wrapper .eq("outpatient_date",doctorVo.getOutpatientDate());
+            wrapper.ge("outpatient_date",doctorVo.getOutpatientDate());
         }
-        wrapper.isNull("a.appoint_id");
+//        wrapper.isNull("a.appoint_id");
         if (StrUtil.isNotBlank(doctorVo.getDepartmentProfile())){
             wrapper.like("d.department_name",doctorVo.getDepartmentProfile());
         }

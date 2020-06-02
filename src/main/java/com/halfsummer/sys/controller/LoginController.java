@@ -117,8 +117,8 @@ public class LoginController {
             grxx.setFontFamily("ok-icon");
             grxx.setIcon("&#xe6b8;");
             list.add(menu);
+//            list.add(yyxx);
             list.add(mzxx);
-            list.add(yyxx);
             list.add(dzbl);
             list.add(grxx);
         }else if(StrUtil.equals(user.getRoleCode(),"2")){

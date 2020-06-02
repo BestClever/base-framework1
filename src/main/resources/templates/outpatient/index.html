@@ -75,6 +75,9 @@
                 case "appoint":
                     appoint(data);
                     break;
+                case "money":
+                    money(data);
+                    break;
             }
         });
 
@@ -88,16 +91,31 @@
 
             });
         }
+        function money(data) {
+            let url = "/appoint/payment";
+            let type = "post";
+            let params={outpatientId:data.outpatientNumber};
+            okUtils.ajax(url,type,params,true).done(function (result) {
+                okUtils.tableSuccessMsg(result.msg);
+            }).fail(function () {
+
+            });
+        }
     })
 </script>
 
 <!-- 行工具栏模板 -->
 <script type="text/html" id="operationTpl">
-    {{# if(d.appointStatus=='1'){ }}
+    {{# if(d.appointStatus=='2'){ }}
     <span class="layui-btn layui-btn-warm layui-btn-xs">该医生您已经预约了</span>
+    {{# } else { }}
+    {{# if(d.appointStatus=='1'){ }}
+    <span class="layui-btn layui-btn-warm layui-btn-xs" lay-event="money">付款</span>
     {{# } else { }}
     <a href="javascript:" class="layui-btn layui-btn-xs" title="预约" lay-event="appoint">预约</a>
     {{# } }}
+    {{# } }}
+
 </script>
 
 </body>

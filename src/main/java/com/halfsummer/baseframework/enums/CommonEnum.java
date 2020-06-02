@@ -23,7 +23,8 @@ public enum CommonEnum implements BaseInfoInterface {
 	SAVE_FAILED(101,"保存失败,请重试"),
 	DATA_DOESNT_EXIST(10086,"该用户无排队信息"),
 
-	not_exist_user(2000,"用户名或密码错误")
+	not_exist_user(2000,"用户名或密码错误"),
+	MONEY(20,"付款成功!")
 
 
 
