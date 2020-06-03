@@ -352,7 +352,7 @@ public class DoctorController {
         User user = (User) request.getSession().getAttribute("user");
         user = userService.getById(user.getUserId());
         if (StrUtil.isNotBlank(userVo.getPassword())){
-            BeanUtil.copyProperties(userVo,user);
+            user.setPassword(userVo.getPassword());
             userService.updateById(user);
         }
         return ResultDataUtil.createSuccess(CommonEnum.SUCCESS).setData(user);

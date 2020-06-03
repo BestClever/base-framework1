@@ -29,6 +29,7 @@
             </div>
         </div>
     </form>
+
     <script type="text/html" id="toolbarDemo">
         <div class="layui-btn-container">
 
@@ -36,6 +37,46 @@
 
         </div>
     </script>
+</div>
+<div class="site-text" style="margin: 5%; display: none" id="windows" target="test123">
+    <form class="layui-form" id="books" method="post" lay-filter="example">
+        <div class="layui-form-item">
+            <label class="layui-form-label">请输入姓名</label>
+            <div class="layui-input-block">
+                <input type="text" id="userName" name="bid" lay-verify="title" autocomplete="off"
+                       placeholder="请输入姓名" class="layui-input">
+            </div>
+
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">请输入生日</label>
+            <div class="layui-input-block">
+                <input type="text" name="date" id="date" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+            </div>
+
+        </div>
+        <div class="layui-form-item">
+
+            <label class="layui-form-label">选择性别</label>
+            <div class="layui-input-block">
+                <input type="radio" name="sex" value="1" title="男" checked="">
+                <input type="radio" name="sex" value="2" title="女">
+            </div>
+
+
+
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">请输入手机</label>
+            <div class="layui-input-block">
+                <input type="text" id="phone" name="bid" lay-verify="title" autocomplete="off"
+                       placeholder="请输入新密码" class="layui-input">
+            </div>
+
+        </div>
+
+    </form>
+
 </div>
 
 <!--js逻辑-->
@@ -76,6 +117,9 @@
                 console.info(res, curr, count);
             }
         });
+        laydate.render({
+            elem: '#date'
+        });
 
         form.on("submit(search)", function (data) {
             userTable.reload({
@@ -93,6 +137,9 @@
             switch (obj.event) {
                 case "appoint":
                     appoint(data);
+                    break;
+                case "update":
+                    update(data);
                     break;
 
             }
@@ -154,6 +201,44 @@
 
         }
 
+        function update(data) {
+            layer.open({
+                type: 1 //Page层类型
+                , skin: 'layui-layer-molv'
+                , area: ['480px', '470px']
+                , title: ['修改个人信息', 'font-size:18px']
+                , btn: ['确定', '取消']
+                , shadeClose: true
+                , shade: 0 //遮罩透明度
+                , maxmin: true //允许全屏最小化
+                , content: $("#windows")
+                , success: function () {
+                      $('#psw').val(data.password);
+                    $('#userName').val(data.userName);
+                     $('#date').val(data.birthDay);
+                     $('#phone').val(data.phone);
+
+
+                }, yes: function () {
+                    debugger
+                    let url = "/doctor/upUser";
+                    let type = "post";
+                    let  password = $('#psw').val();
+                    let  userName = $('#userName').val();
+                    let  birthDay = $('#date').val();
+                    let  userSex = $("input[type='radio']:checked").val();
+                    let  phone = $('#phone').val();
+                    let params = {password: password,userName:userName,birthDay:birthDay,userSex:userSex,phone:phone};
+                    console.log("params",params);
+                    okUtils.ajax(url, type, params, true).done(function (result) {
+                        layer.closeAll();
+                    }).fail(function () {
+
+                    });
+                }
+            });
+
+        }
 
 
 
@@ -165,6 +250,7 @@
     {{# if(d.roleName=='患者'){ }}
     <a href="javascript:" class="layui-btn layui-btn-xs" title="入职" lay-event="appoint">入职</a>
     {{# } }}
+    <a href="javascript:" class="layui-btn layui-btn-xs" title="修改信息" lay-event="update">修改信息</a>
 </script>
 
 </body>

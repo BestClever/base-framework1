@@ -171,7 +171,7 @@
                     type: 1 //Page层类型
                     , skin: 'layui-layer-molv'
                     , area: ['380px', '270px']
-                    , title: ['填写修改门诊数', 'font-size:18px']
+                    , title: ['填写修改密码', 'font-size:18px']
                     , btn: ['确定', '取消']
                     , shadeClose: true
                     , shade: 0 //遮罩透明度
@@ -182,9 +182,10 @@
 
                     }, yes: function () {
                         let url = "/doctor/updatPass";
+                        debugger
                         let type = "post";
-                        let params = {password: $('#bid').val()};
-                        $.ajax(url, type, params, true).done(function (result) {
+                        let params = {password: $('#psw').val()};
+                        okUtils.ajax(url, type, params, true).done(function (result) {
                             layer.closeAll();
                         }).fail(function () {
 

@@ -2,10 +2,10 @@
 <html lang="en" class="page-fill">
 <head>
     <meta charset="UTF-8">
-    <title>ok-admin v2.0 | 很赞的后台模版 - 注册</title>
+    <title>医疗预约系统-注册</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="keywords" content="ok-admin v2.0,ok-admin网站后台模版,后台模版下载,后台管理系统模版,HTML后台模版下载">
-    <meta name="description" content="ok-admin v2.0，顾名思义，很赞的后台模版，它是一款基于Layui框架的轻量级扁平化且完全免费开源的网站后台管理系统模板，适合中小型CMS后台系统。">
+    <meta name="keywords" content="医疗预约系统-注册">
+    <meta name="description" content="医疗预约系统-注册">
     <link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" href="../css/oksub.css"/>
     <style>
@@ -49,10 +49,23 @@
                    autocomplete="off" id="comPassword" class="layui-input">
         </div>
         <div class="layui-form-item input-item">
+            <label >性别</label>
+            <div class="layui-input-block">
+                <input type="radio" name="userSex" value="1" title="男" checked>
+                <input type="radio" name="userSex" value="2" title="女" >
+            </div>
+        </div>
+        <div class="layui-form-item input-item">
+            <label >出生日期</label>
+            <div class="layui-input-block">
+                <input type="text" name="birthDay" id="birthDay"  autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item input-item">
             <label for="phone">输入手机号</label>
             <input type="text" lay-verify="required|phone" name="phone" placeholder="请输入手机号" autocomplete="off"
                    id="phone" maxlength="11" class="layui-input">
-</div>
+        </div>
         <div class="layui-form-item">
             <button class="layui-btn layui-block" lay-filter="login" lay-submit="">注册</button>
         </div>
@@ -64,17 +77,22 @@
 <!--js逻辑-->
 <script src="../lib/layui/layui.js"></script>
 <script>
-    layui.use(["form", "okGVerify", "okLayer","okUtils"], function () {
+    layui.use(["form", "okGVerify", "okLayer","okUtils","laydate"], function () {
         let form = layui.form;
         let $ = layui.jquery;
         let okGVerify = layui.okGVerify;
         let okLayer = layui.okLayer;
         let okUtils = layui.okUtils;
+        let laydate = layui.laydate;
         let regPhone = /^[1][0-9]{10}$/;
         /**手机号验证**/
         let setInter = '';
         /**定时器对象*/
         let second = 60;//设置时间
+
+        laydate.render({
+            elem: '#birthDay'
+        });
         /**
          * 初始化验证码
          */
@@ -104,11 +122,12 @@
             // });
             //let params =
             okUtils.ajax('/doctor/addUser','post',data.field,true).done(function (date) {
+                debugger
                 okLayer.greenTickMsg(date.msg+",去登陆", function () {
                     window.location = okUtils.baseUrl + "/sys/toLogin";
                 })
             }).fail(function () {
-                
+
             });
             return false;
         });

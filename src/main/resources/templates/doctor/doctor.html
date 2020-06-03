@@ -213,7 +213,7 @@
 
 
                 } ,yes:function(){
-                    let url = "/appoint/modifyNumber";
+                    let url = "/doctor/modifyNumber";
                     let type = "post";
                     let params={outpatientNumber: $('#oNum').val()};
                     okUtils.ajax(url,type,params,true).done(function (result) {
@@ -277,7 +277,8 @@
 <!-- 行工具栏模板 -->
 <script type="text/html" id="operationTpl">
     {{#  if(d.appointStatus == 2){ }}
-    <a href="javascript:" class="layui-btn layui-btn-xs" title="预约" lay-event="appoint">开始诊断</a>
+     <a href="javascript:" class="layui-btn layui-btn-xs" title="预约" lay-event="appoint">开始诊断</a>
+
     <a href="javascript:" class="layui-btn layui-btn-xs" title="预约" lay-event="cancel">取消预约</a>
     {{#  } else if(d.appointStatus == 3) { }}
     <a href="javascript:" class="layui-btn layui-btn-xs" title="预约" lay-event="complete">诊断完成</a>
@@ -287,7 +288,7 @@
     {{#  } else if(d.appointStatus == 5) { }}
     <span class="layui-btn layui-btn-normal layui-btn-xs">该预约已取消</span>
     {{#  } else if(d.appointStatus == 6) { }}
-    <a href="javascript:" class="layui-btn layui-btn-xs" title="预约" lay-event="appoint">开始诊断</a>
+<!--    <a href="javascript:" class="layui-btn layui-btn-xs" title="预约" lay-event="appoint">开始诊断</a>-->
     <a href="javascript:" class="layui-btn layui-btn-xs" title="预约" lay-event="cancel">取消预约</a>
     {{# } }}
 </script>
